@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<!--        <center>-->
+<!--                <h3>Joint-Pursuit Experiment</h3>-->
+<!--                <img src=".\static\IMG\{{ user_image }}" alt="{{ user_image }}" height="700px" width="700px">-->
+<!--                <button type="button">Click Me!</button>-->
+<!--        </center>-->
+<div class="drawspace">
+
+
+
+
+<center>
+        <div class="imgContainer">
+            <h1>Debrief</h1> <br><br>
+
+            <h4>The experiment has ended.</h4> <br><br>
+
+            <p class="instructions_txt" style="padding-right: 50px; padding-left: 50px;">
+                Thank you for your participation and you are free to exit this webpage or navigate to another site.
+                If you have any questions or would like to withdraw your data for any reason please contact the research team below at:
+            </p>
+
+            <br><br>
+            <h4>Email: <span style="color: blue;">mosmith3@asu.edu</span> </h4>
+            <h4>Call or Text: (480) 295-5113</h4>
+            <br><br>
+
+            <p class="instructions_txt" style="padding-right: 50px; padding-left: 50px;">
+                If you would like to learn more about your participation and role in this study click continue below.
+                Otherwise, your data has been recorded and you are free to exit this page or navigate to another website.
+            </p>
+            <br><br>
+            <div class="imgButton">
+                <form method='POST'>
+<!--                    <button class="button back_button" name="submit_back" value="submit_back">Back</button>-->
+                    <button class="button continue_button" name="submit_continue" value="submit_continue">Learn More</button>
+                </form>
+            </div>
+        </div>
+</center>
+
+</div>
+{% endblock %}
