@@ -16,23 +16,24 @@ class PursuitGame_PageHandler(object):
         # self.template = 'script_test.html'
         # self.kwargs = {}
 
+        # self.ext = r"C:\Users\mason\Desktop\ResearchWebsite-master\apps\static\PursuitGame\templates" +"\\"
+        self.ext = r"PursuitGame/"
 
         i = 0
         self.trial_templates = {}
-
         # PRETRIAL #######################
-        # self.trial_templates[i] = ['image_button_page.html', {'file': 'Page_Consent.jpg'}]; i += 1
-        # self.trial_templates[i] = ['background.html', {}]; i += 1
-        # self.trial_templates[i] = ['image_button_page.html', {'file': 'Page_Exclusion.jpg'}]; i += 1
-        # self.trial_templates[i] = ['survey_info.html', {}]; i += 1
-        # self.trial_templates[i] = ['survey_pretrial.html', {}]; i += 1
-        # self.trial_templates[i] = ['instructions_movement.html', {}]; i += 1
-        # self.trial_templates[i] = ['instructions_turns.html', {}]; i += 1
-        # self.trial_templates[i] = ['instructions_penalty.html', {}]; i += 1
-        # self.trial_templates[i] = ['instructions_objective.html', {}]; i += 1
-        # self.trial_templates[i] = ['instructions_practice.html', {}]; i += 1
-        # self.trial_templates[i] = ['game_canvas.html', {}]; i += 1
-        # self.trial_templates[i] = ['instructions_end.html', {}]; i += 1
+        self.trial_templates[i] = ['image_button_page.html', {'file': 'Page_Consent.jpg'}]; i += 1
+        self.trial_templates[i] = ['background.html', {}]; i += 1
+        self.trial_templates[i] = ['image_button_page.html', {'file': 'Page_Exclusion.jpg'}]; i += 1
+        self.trial_templates[i] = ['survey_info.html', {}]; i += 1
+        self.trial_templates[i] = ['survey_pretrial.html', {}]; i += 1
+        self.trial_templates[i] = ['instructions_movement.html', {}]; i += 1
+        self.trial_templates[i] = ['instructions_turns.html', {}]; i += 1
+        self.trial_templates[i] = ['instructions_penalty.html', {}]; i += 1
+        self.trial_templates[i] = ['instructions_objective.html', {}]; i += 1
+        self.trial_templates[i] = ['instructions_practice.html', {}]; i += 1
+        self.trial_templates[i] = ['game_canvas.html', {}]; i += 1
+        self.trial_templates[i] = ['instructions_end.html', {}]; i += 1
 
 
         # TRIAL #####################################
@@ -141,5 +142,5 @@ class PursuitGame_PageHandler(object):
         self.current_template = template
         self.current_kwargs = kwargs
 
-        return template,kwargs
+        return  self.ext+template,kwargs
 

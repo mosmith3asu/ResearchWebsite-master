@@ -1,0 +1,60 @@
+{% extends "PursuitGame/base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<!--        <center>-->
+<!--                <h3>Joint-Pursuit Experiment</h3>-->
+<!--                <img src=".\static\IMG\{{ user_image }}" alt="{{ user_image }}" height="700px" width="700px">-->
+<!--                <button type="button">Click Me!</button>-->
+<!--        </center>-->
+<div class="drawspace">
+
+
+
+
+<center>
+        <div class="imgContainer">
+            <h1>Additional Information</h1>
+            <br><br>
+            <div class="instruction_txt">
+                <p class="instructions_txt" style="padding-right: 50px; padding-left: 50px;">
+                    Your data will be used to determine effects of correctly and incorrectly assuming a
+                    human partner’s (you) bias decision-making under risk sensitivity.
+                </p>
+                <p class="instructions_txt" style="padding-right: 50px; padding-left: 50px;">
+                    We simulated you having bias that generates <span class="highlight_txt">{{true_sensitivity}}</span> behavior by telling you
+                    that there was a <span class="highlight_txt">{{prob}}%</span> chance of getting a <span class="highlight_txt">{{pen}}</span> penalty to your score.
+                    In reality, the "unbiased" belief would be that there is a 50% of getting a -3 penalty.
+                    Also, we designed your virtual partner to assume that you were <span class="highlight_txt">{{assumed_sensitivity}}</span>
+                    and would tend to <span class="highlight_txt">{{risk_behavior}}</span> risky states even when a better option was present.
+                    Therefore, your partner <span class="highlight_txt">{{accuracy}}</span> assumed your simulated bias.
+<!--                    assumed_risk_sensitivity =<risk-averse/seeking>-->
+<!--                    risk_behavior = <avoid/enter>-->
+<!--                    accuracy= <correctly/incorrectly>-->
+                </p>
+                <p class="instructions_txt" style="padding-right: 50px; padding-left: 50px;">
+                    What our research team is interested in is how your actions differ when we change the virtual
+                    partner’s assumptions. Also, we are interested in looking at how trustworthy you perceive
+                    your partner to be under these conditions. Using these observations, we hope to improve robot’s mental model of
+                    humans such that the robot can better understand, predict, and assist humans in cooperative
+                    tasks like search and rescue, manufacturing and, more generally, joint-decision making scenarios.
+                </p>
+            </div> <br><br>
+
+
+                <p class="instructions_txt" style="padding-right: 50px; padding-left: 50px;">
+                    <em>Your data has been recorded and you are now free to exit this page or navigate to another website.</em>
+                </p>
+                <div class="imgButton">
+                    <form method='POST'>
+                        <button class="button back_button" name="submit_back" value="submit_back">Back</button>
+        <!--                <button class="button continue_button" name="submit_continue" value="submit_continue">Learn More</button>-->
+                    </form>
+                </div>
+
+            </div>
+
+
+</center>
+
+</div>
+{% endblock %}

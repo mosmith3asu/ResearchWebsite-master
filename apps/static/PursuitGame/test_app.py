@@ -15,7 +15,10 @@ APP_KEY = '92659'
 
 
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='',
+            static_folder='C:\\Users\\mason\\Desktop\\ResearchWebsite-master\\apps\\static',
+            template_folder='C:\\Users\\mason\\Desktop\\ResearchWebsite-master\\apps\\templates')
 app.debug = DEBUG
 app.config['SECRET_KEY'] = APP_KEY
 # app.config["SESSION_PERMANENT"] = True #set the session to permanent. This means that the session cookies won’t expire when the browser closes.
@@ -42,8 +45,6 @@ def connect():
     # socketio.start_background_task(target=update_gamestate,room=session['sid'])
     # socketio.emit('update_gamestate', GAME.get_gamestate(), room=session['sid'])  #
     print(session)
-
-
 
 
 @socketio.on('update_gamestate')
@@ -73,6 +74,7 @@ def home():
     template, kwargs = PAGES.get_page(request)
     # print(session)
     print(f'[{PAGES.stage}]',template,kwargs)
+    # return render_template('/static/PursuitGame/templates/index.html', **kwargs)
     return render_template(template, **kwargs)
     # return render_template('script_test.html')
 

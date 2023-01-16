@@ -1,0 +1,50 @@
+{% extends "PursuitGame/base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<!--        <center>-->
+<!--                <h3>Joint-Pursuit Experiment</h3>-->
+<!--                <img src=".\static\IMG\{{ user_image }}" alt="{{ user_image }}" height="700px" width="700px">-->
+<!--                <button type="button">Click Me!</button>-->
+<!--        </center>-->
+<div class="drawspace">
+
+
+
+
+<center>
+        <div class="imgContainer">
+            <h1>Summary</h1>
+            <br><br>
+            <div class="instruction_txt">
+                <ul>
+                    <p class="instructions_head">Your Participation:</p>
+                    <li>You will play a series of 7 games each lasting a maximum of 1 minute</li>
+                    <li>Each game will be followed by a brief survey about your interaction with your partner</li>
+                    <li>At the end of the experiment, additional information about your participation will be provided</li>
+
+                    <p class="instructions_head">Game Review:</p>
+                    <li>Catch the target by moving next to it at the same time as your partner</li>
+                    <li>Use the arrow keys to move your character around the screen</li>
+                    <li>Attempt to catch the target as fast as possible to maximize your final score</li>
+                    <li>Attempt to avoid "risky states" and penalties to maximize your final score</li>
+
+                    <p class="instructions_head">Practice Round:</p>
+                    <li>Before we begin, you will play a practice round</li>
+                    <li>Take this time to familiarize yourself with the controls and game mechanics</li>
+                    <li>Your performance in this practice round will not count towards your final score</li>
+                    <li>After you finish, we will begin the experiment</li>
+                    <li>You may go back and review previous instructions if you wish</li>
+
+                </ul>
+            </div>
+            <div class="imgButton">
+                <form method='POST'>
+                    <button class="button back_button2" name="submit_back" value="submit_back">Back</button>
+                    <button class="button continue_button2" name="submit_practice" value="submit_practice">Begin Practice</button>
+                </form>
+            </div>
+        </div>
+</center>
+
+</div>
+{% endblock %}

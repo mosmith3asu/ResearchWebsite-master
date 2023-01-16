@@ -1,0 +1,43 @@
+{% extends "PursuitGame/base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<!--        <center>-->
+<!--                <h3>Joint-Pursuit Experiment</h3>-->
+<!--                <img src=".\static\IMG\{{ user_image }}" alt="{{ user_image }}" height="700px" width="700px">-->
+<!--                <button type="button">Click Me!</button>-->
+<!--        </center>-->
+<div class="drawspace">
+
+
+
+
+<center>
+        <div class="imgContainer">
+            <h1>Turns & the Turn Timer</h1>
+            <div> <img src="\static\IMG\Instructions_Turns.gif" alt="instructions_gif" class="instruction_img"> </div>
+            <div class="instruction_txt">
+                <ul>
+                    <p class="instructions_head">The Turn Timer:</p>
+                    <li>Your character will move according to the  <span style="font-weight:bold;">last action</span> you input before your <span style="font-weight:bold;">turn expires</span></li>
+                    <li>The "Turn Timer" indicates the time remaining until your move will be executed</li>
+                    <li>When the timer expires, you and your partner will then move <span style="font-weight:bold;">simultaneously</span></li>
+                    <li>Shorty after, the target will move</li>
+
+                    <p class="instructions_head">Remaining Moves:</p>
+                    <li>The remaining moves that your team has is shown in the top left</li>
+                    <li>You have a total of  <span style="font-weight:bold;">20 moves</span> to catch the target before the game ends</li>
+                    <li>Any remaining moves after you catch the target will be added to your final score</li>
+
+                </ul>
+            </div>
+            <div class="imgButton">
+                <form method='POST'>
+                    <button class="button back_button2" name="submit_back" value="submit_back">Back</button>
+                    <button class="button continue_button2" name="submit_continue" value="submit_continue">Continue</button>
+                </form>
+            </div>
+        </div>
+</center>
+
+</div>
+{% endblock %}

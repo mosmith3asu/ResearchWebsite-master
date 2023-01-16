@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends "PursuitGame/base.html" %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
-<!--<div class="drawspace">-->
-    <h1 class="page_title">Survey</h1>
+
+<div class="drawspace">
+    <h1 class="page_title">Pre-Experiment Survey</h1>
+    <br><br>
     <p class="page_title_subtext">
-        Please complete the following survey based on your feelings when interacting with your virtual partner.
+        Please complete the following survey based on your feelings when interacting with automated agents.
+        For example, how do you feel when interacting with automated systems like robots, self-driving cars, or automated voice assistants.
         When you are finished responding, please press the "Submit" button to continue.
     </p>
 <form method='POST'>
@@ -150,10 +153,11 @@
    <div class="centered_button_container">
        <button class="button submit_button" name="submit_survey_response" value="submit_survey_response">Submit</button>
    </div>
-
-
 </form>
-<!--</div>-->
+
+    <p class="page_title" style="color:red">{{msg}}</p>
+</div>
+
 
 
 

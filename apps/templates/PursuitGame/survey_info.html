@@ -1,0 +1,43 @@
+{% extends "PursuitGame/base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<!--        <center>-->
+<!--                <h3>Joint-Pursuit Experiment</h3>-->
+<!--                <img src=".\static\IMG\{{ user_image }}" alt="{{ user_image }}" height="700px" width="700px">-->
+<!--                <button type="button">Click Me!</button>-->
+<!--        </center>-->
+<div class="drawspace">
+
+
+
+
+<center>
+        <div class="imgContainer">
+            <h1>Survey</h1>
+            <br><br><br><br>
+            <div class="instruction_txt">
+                <ul>
+                    <p class="instructions_head">Please complete the survey on the following page:</p>
+                    <li>Questions relate to how you generally feel when interacting with artificial agents </li>
+                    <li>Awnser the questions to the best of your ability</li>
+                    <li>Click the bubble to record your response</li>
+                    <li>When you are finished, submit the survey to continue to the experiment instructions</li>
+
+<!--                    <p class="instructions_head">Scoring:</p>-->
+<!--                    <li> </li>-->
+<!--                    <li> </li>-->
+<!--                    <li> </li>-->
+
+                </ul>
+            </div>
+            <div class="imgButton">
+                <form method='POST'>
+<!--                    <button class="button back_button2" name="submit_back" value="submit_back">Back</button>-->
+                    <button class="button continue_button" name="submit_continue" value="submit_continue">Continue</button>
+                </form>
+            </div>
+        </div>
+</center>
+
+</div>
+{% endblock %}

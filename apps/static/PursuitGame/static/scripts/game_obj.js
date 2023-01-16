@@ -7,7 +7,7 @@
 const update_rate = 10; // in miliseconds
 const host = 'http://192.168.0.137:8080'
 const update_gamestate_name = 'update_gamestate'
-
+const render_route = '/render_PursuitGame' //  "/"
 
 
 
@@ -405,9 +405,9 @@ class Game  {
     }
 
     post_close(){
-        $.post( "/", {advance: 1 });
+        $.post(render_route, {advance: 1 });
         // ctx.clearRect(0,0,can.width,can.height);
-        location.replace("/")
+        location.replace(render_route)
         this.is_closed = true;
 
         // const XHR = new XMLHttpRequest();

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-
+<!--    <base href="/static/PursuitGame">-->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,18 +11,24 @@
     <!--Fonts from Google Fonts--><link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!--Fonts from Google Fonts--><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <!--CSS Styles--><link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/canvas.css') }}">
-    <!--CSS Styles--><link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/buttons.css') }}">
-    <!--CSS Styles--><link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
-    <!--CSS Styles--><link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/survey.css') }}">
+    <!--CSS Styles--><link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='PursuitGame/static/styles/canvas.css') }}">
+    <!--CSS Styles--><link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='PursuitGame/static/styles/buttons.css') }}">
+    <!--CSS Styles--><link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='PursuitGame/static/styles/base.css') }}">
+    <!--CSS Styles--><link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='PursuitGame/static/styles/survey.css') }}">
 
-<!--    &lt;!&ndash;JavaScript&ndash;&gt; <script src="{{ url_for('static', filename='scripts/canvas.js') }}"></script>-->
+<!--    &lt;!&ndash;CSS Styles&ndash;&gt;<link rel= "stylesheet" type= "text/css" href= "/static/styles/canvas.css'">-->
+<!--    &lt;!&ndash;CSS Styles&ndash;&gt;<link rel= "stylesheet" type= "text/css" href= "/static/styles/buttons.css'">-->
+<!--    &lt;!&ndash;CSS Styles&ndash;&gt;<link rel= "stylesheet" type= "text/css" href= "/static/styles/base.css'">-->
+<!--    &lt;!&ndash;CSS Styles&ndash;&gt;<link rel= "stylesheet" type= "text/css" href= "/static/styles/survey.css'">-->
+
+    <!--JavaScript--> <script src="{{ url_for('static', filename='PursuitGame/static/scripts/game_obj.js') }}"></script>
     <!--Socketio--> <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     <!--jQuery--> <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+    <base href= "{{ url_for('static',filename='PursuitGame/') }}">
 <h1>Joint-Pursuit Experiment</h1>
 <!--    <nav class="navbar">-->
 <!--        <a class="navbar-brand" href="#">MOS Research</a>-->
