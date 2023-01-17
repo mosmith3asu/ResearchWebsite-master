@@ -4,19 +4,33 @@ import logging
 import time
 import numpy as np
 import math
+from static.scripts.make_worlds import WorldDefs
+
+
+
 class GameHandler(object):
-    def __init__(self,iworld,debug = True):
+    def __init__(self,iworld,debug = False):
         self.debug = debug
+
+        self.pen_reward = -3
+        self.pen_prob = 0.5
 
         print('INITIALIZING GAME')
         self.iworld = iworld
         self.done = False # game is done and disable move
         self.is_finished = False # ready to advance to next pate
 
-        self.state = [1,1,3,3,5,5]
-        self.penalty_states = [[1,1],[1,2],]
+        self.state = list(np.array(WorldDefs.world[iworld].start_obs).flatten())
+        self.state = [int(s) for s in self.state ]
 
+        # self.penalty_states = list(np.array(WorldDefs.world[iworld].penalty_states).flatten())
 
+        # self.penalty_states = [list(s) for s in WorldDefs.world[iworld].penalty_states ]
+        self.penalty_states = WorldDefs.world[iworld].penalty_states
+        self._walls = WorldDefs.world[iworld].walls
+        # print(self.penalty_states)
+
+        self.penalty_enable = True
         self.penalty_counter = 0
         self.remaining_moves = 20 if not self.debug else 3
         self.move_enables = {}
@@ -30,7 +44,7 @@ class GameHandler(object):
         self.t_finished_overlay_delay = 3
         self.t_move_dur = 3.0 if not self.debug else 1.0
         self.t_pen_overlay_dur = (2/3) * self.t_move_dur
-        self.t_last_pen = time.time()
+        self.t_last_pen = time.time() -10
         self.t_move_start = time.time()
 
 
@@ -39,7 +53,7 @@ class GameHandler(object):
         self.timer_max_val = 1
         self.timer_min_val = 0
 
-        self.pen_max_alpha = 1
+        self.pen_max_alpha = 0.8
         self.pen_alpha = self.pen_max_alpha
 
         self.a2name = {}
@@ -80,6 +94,7 @@ class GameHandler(object):
         post_move_duration = -1*min([0,self.t_move_dur - move_duration])
 
         if not self.done:
+
             perc_complete = (time.time() - self.t_last_pen)/self.t_pen_overlay_dur
             self.pen_alpha =  self.pen_max_alpha * max([0,1-perc_complete])
 
@@ -92,7 +107,14 @@ class GameHandler(object):
                 if verbose: print(f'EXECUTING:{self.a2name[self.current_action_idx["H"]]}')
                 players_finished = self.execute_players()
                 evader_finished = self.execute_evader(post_move_duration)
+                if players_finished and self.penalty_enable:
+                    if self.roll_penalty(self.state[2:4]):
+                        self.t_last_pen = time.time()
+                        self.penalty_counter += self.pen_reward
+                    self.penalty_enable = False
+
                 if players_finished and evader_finished:
+
                     self.new_move(post_move_duration)
 
             # Check Closing Gamestate
@@ -118,14 +140,36 @@ class GameHandler(object):
             self.move_enables['R'] = False
             self.move_enables['H'] = False
             self.move_enables['E'] = False
-        else:  done = False
+        else:
+            done = False
         return done
 
-    def new_world(self,iworld):
+    def new_world(self,iworld=None):
+        # for key in self.default_settings.keys():
+        #     self.__dict__[key] =  self.default_settings[key]+
+        #
+        iworld = self.iworld+1 if iworld is None else iworld
         self.__init__(iworld)
         # for key in self.default_settings.keys():
         #     self.__dict__[key] = copy.deepcopy(self.default_settings[key])
-        # self.iworld = iworld
+        self.iworld = iworld
+        # self.done = False
+
+    def roll_penalty(self,curr_pos):
+        in_pen = any([np.all(np.array(curr_pos) == np.array(s)) for s in self.penalty_states])
+        if in_pen: got_pen = np.random.choice([True,False],p=[self.pen_prob,(1-self.pen_prob)])
+        else:  got_pen = False
+        return got_pen
+
+    def check_move_wall(self,curr_pos,move):
+        new_pos = curr_pos + move
+        # return new_pos
+        if any([np.all(new_pos==w) for w in self._walls]):  return curr_pos
+        else:  return new_pos
+
+
+
+
     def new_move(self,t_post_move):
         is_last_move = (self.remaining_moves <= 1)
 
@@ -134,10 +178,10 @@ class GameHandler(object):
         if t_post_move >= total_delay:
             self.t_move_start = time.time()
             self.remaining_moves = max(0,self.remaining_moves - 1)
-
             self.move_enables['R'] = True
             self.move_enables['H'] = True
             self.move_enables['E'] = True
+            self.penalty_enable =True
     def execute_players(self):
         move_R = self.a2move[self.current_action_idx['R']]
         move_H = self.a2move[self.current_action_idx['H']]
@@ -146,7 +190,17 @@ class GameHandler(object):
         move_R = move_R if self.move_enables['R'] else self.a2move['wait']
         move_H = move_H if self.move_enables['H'] else self.a2move['wait']
         move_E = move_E if self.move_enables['E'] else self.a2move['wait']
-        new_state = np.array(self.state) + np.array(move_R + move_H + move_E)
+
+
+        if self.iworld ==0:
+            move_R = [-move_H[0],move_H[1]]
+        new_state = np.array(self.state).copy()
+
+        for _slice,_move in zip([slice(0,2),slice(2,4),slice(4,6)],[move_R,move_H,move_E]):
+            new_state[_slice] = self.check_move_wall(new_state[_slice],_move)
+
+
+        # new_state = np.array(self.state) + np.array(move_R + move_H + move_E)
 
         self.state = [int(s) for s in new_state]
         finished = True
@@ -175,7 +229,10 @@ class GameHandler(object):
         move_E = move_E if self.move_enables['E'] else self.a2move['wait']
         move_E = move_E if not is_last_move else self.a2move['wait']
 
-        new_state = np.array(self.state) + np.array(move_R + move_H + move_E)
+        new_state = np.array(self.state).copy()
+        for _slice,_move in zip([slice(0,2),slice(2,4),slice(4,6)],[move_R,move_H,move_E]):
+            new_state[_slice] = self.check_move_wall(new_state[_slice],_move)
+        # new_state = np.array(self.state) + np.array(move_R + move_H + move_E)
         self.state = [int(s) for s in new_state]
 
         if finished:
@@ -201,7 +258,7 @@ class GameHandler(object):
         data['pen_alpha'] = self.pen_alpha
         data['nPen'] = self.penalty_counter
         data['moves'] = self.remaining_moves
-        data['playing'] = self.done
+        data['playing'] = not self.done
         data['is_finished'] = self.is_finished
         data['penalty_states'] = self.penalty_states
         data['current_action'] = self.current_action_idx['H']

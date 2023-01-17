@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %} Pursuit Game {% endblock %}
+
+{#<!-- Specific Page CSS goes HERE  -->#}
+{% block stylesheets %}
+{% endblock stylesheets %}#}
+{% block content %}
+<main id="main-frame">
+  <div id = "master-frame">
+    <div id="canvas-frame">
+      <canvas id="canvas"  style = "border: 1px solid blue" width="700" height="700"></canvas>
+    </div>
+    <div id="background-frame">
+      <h1 id = 'background-title'>Background</h1>
+      <p id = 'background-instructions'> Please provide a small amount of information about yourself before we begin...</p>
+      <form id="background-form">
+        <table id = background-table></table>
+      </form>
+      <p id = 'background-incomplete'> Please answer every question of the survey</p>
+      <button id="submit-background-button">Submit</button>
+    </div>
+    <div id="survey-frame">
+      <h1 id = 'survey-title'>Survey</h1>
+      <p id = 'survey-instructions'>  Please complete the following survey based on your feelings when interacting with automated agents.
+        <br><br>For example, how do you feel when interacting with automated systems like robots, self-driving cars, or automated voice assistants.
+        <br><br> When you are finished responding, please press the "Submit" button to continue..</p>
+
+      <form id="survey-form">
+        <table id = survey-table></table>
+      </form>
+      <p id = 'survey-incomplete'> Please answer every question of the survey</p>
+      <button id="submit-survey-button">Submit</button>
+    </div>
+    <div id="info-frame">
+      <h1 id = 'info-page-title'>Title</h1>
+      <div id = 'info-img'>
+        <img id="info-page-img"
+             src="https://s3-alpha.figma.com/hub/file/948140848/1f4d8ea7-e9d9-48b7-b70c-819482fb10fb-cover.png" alt="img">
+      </div>
+
+
+      <div id="info-page-text">
+        <p> This is some smaple text</p>
+      </div>
+
+      <div id="nav-buttons-frame">
+        <button id="back-button">Back</button>
+        <button id="continue-button">Continue</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script script src="{{ url_for('static', filename='scripts/client_socket.js') }}"></script>
+  <script script src="{{ url_for('static', filename='scripts/game_obj.js') }}"></script>
+  <script script src="{{ url_for('static', filename='scripts/page_handler.js') }}"></script>
+  <script script src="{{ url_for('static', filename='scripts/page_content.js') }}"></script>
+
+  <script>
+    const FRAMES = ['canvas-frame','info-frame','survey-frame','nav-buttons-frame','submit-survey-button','background-frame']
+    const BUTTONS = {'info-frame': 'nav-buttons-frame', 'survey-frame': 'submit-survey-button'}
+
+    const HAS_NAV_BUTTONS = ['info-frame']
+    // spawn_elements()
+    var current_view = '';
+    const update_rate = 100; // in miliseconds
+    const host = 'http://192.168.0.137:8080'
+    const render_route = "/"
+    const game_end_redirect = false
+
+    const mainFrame = document.getElementById("main-frame");
+    const masterFrame = document.getElementById("master-frame");
+    masterFrame.style.position = 'absolute'
+    masterFrame.style.height = '800px'
+    masterFrame.style.width = "80%"//"700px";
+    masterFrame.style.top = "100px";
+    masterFrame.style.left = mainFrame.clientWidth/2-masterFrame.clientWidth/2 + 'px'//"10%";
+    masterFrame.style.border = '1px solid red'
+
+    // INFO FRAME ==========================================
+    let backgroundpage = new BackgroundPage_Handler()
+    let infopage = new InfoPage_Handler();
+    let surveypage = new SurveyPage_Handler();
+
+    let user_input = new UserInput()
+    let G = new Game([1,0,3,3,1,0]);
+
+    G.render()
+    hide_all()
+    show('info-frame')
+    // $(document).keydown(  user_input.store('keypress',decode_keypress(e)))
+
+
+    $(document).keydown(function(e) { user_input.store('keypress',decode_keypress(e))})
+
+    $(document).ready(function() {
+      const socket = io();
+      function client_update() {
+        const user_input_buffer =  user_input.read_buffer()
+        socket.emit('update_gamestate', user_input_buffer)
+      }
+
+      // Emit actions on .js event ######################################################
+      setInterval(client_update, update_rate) // 1 millisecond is almost close to continu
+
+
+      // Update game data on response from server ##########################################
+      socket.on( 'update_gamestate', (data)=>{
+        // console.log(data)
+
+
+        if (data['view'] !== current_view){
+          hide_all(); show(data['view'])
+          current_view = data['view']
+          console.log('Changing view to '+current_view)
+        }
+        if (data['view'] === 'info-frame'){
+          infopage.update(data)
+        } else if (data['view'] === 'background-frame'){
+          backgroundpage.update(data)
+        } else if (data['view'] === 'canvas-frame'){
+          G.update(data)
+          G.render()
+        }
+
+
+
+      })
+    })
+
+  </script>
+
+
+</main>
+
+{% endblock %}
+

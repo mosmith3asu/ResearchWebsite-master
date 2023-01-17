@@ -1,3 +1,19 @@
+//###################################################
+//###################################################
+//###################################################
+
+
+
+const update_rate = 10; // in miliseconds
+const host = 'http://192.168.0.137:8080'
+const update_gamestate_name = 'update_gamestate'
+const render_route = '/render_PursuitGame' //  "/"
+
+
+
+//###################################################
+//###################################################
+//###################################################
 class ColorPallet {
     constructor() {
         this.white =  'rgba(255,255,255,1.0)'
@@ -7,14 +23,6 @@ class ColorPallet {
     }
 }
 let COLORS = new ColorPallet()
-
-
-
-//###################################################
-//###################################################
-//###################################################
-
-
 class Player  {
     constructor(pos,color,size){
         // this.pos = [0,0]
@@ -95,34 +103,12 @@ class Game  {
         this.penalty_states = [[1,1]]
         this.current_action = 4
 
-        const canvasFrame = document.getElementById("canvas-frame");
-        canvasFrame.style.width = '100%'
-        canvasFrame.style.height = '100%'
-        canvasFrame.style.backgroundColor = 'black'
-        canvasFrame.style.position = 'absolute'
-        // canvasFrame.style.color = 'black'
-        // canvasFrame.style.background = 'black'
 
-
-        const canvas = document.getElementById("canvas");
-        canvas.style.backgroundColor = 'white'
-        canvas.style.left = canvasFrame.clientWidth/2-canvas.clientWidth/2 + 'px'
-        canvas.style.top = canvasFrame.clientHeight/2-canvas.clientHeight/2 + 'px'
-        canvas.style.position = 'absolute'
-
-        this.can = canvas
+        this.can = document.getElementById("canvas");
         this.ctx = this.can.getContext("2d");
         this.nCol = 7; this.can_w = this.can.width; this.tile_w = this.can.width/this.nCol;
         this.nRow = 7; this.can_h = this.can.height; this.tile_h = this.can.height/this.nRow;
 
-        this.empty_world = [
-            [1,1,1,1,1,1,1],
-            [1,0,0,0,0,0,1],
-            [1,0,1,0,1,0,1],
-            [1,0,0,0,0,0,1],
-            [1,0,1,0,1,0,1],
-            [1,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1]];
         this.world_data = [
             [1,1,1,1,1,1,1],
             [1,0,0,0,0,0,1],
@@ -131,7 +117,6 @@ class Game  {
             [1,0,1,0,1,0,1],
             [1,0,0,0,0,0,1],
             [1,1,1,1,1,1,1]];
-        this.load_empty_world()
 
         this.c_robot = 'rgba(100,100,255, 1.0)'
         this.c_human = 'rgba(0,0,255, 1.0)'
@@ -167,7 +152,7 @@ class Game  {
 
     }
     update(data) {
-        // console.log(data['current_action'])
+        console.log(data['current_action'])
         this.world = data['iworld'];
         this.state =  data['state'];
         this.timer = data['timer'];
@@ -176,8 +161,7 @@ class Game  {
         this.moves = data['moves'];
         this.playing = data['playing'];
         this.is_finished = data['is_finished'];
-        const pen_states =  data['penalty_states'];
-        this.penalty_states = pen_states;
+        this.penalty_states = data['penalty_states'];
         this.current_action = data['current_action'];
     }
     clear(){ this.ctx.clearRect(0,0,this.can_w,this.can_h);}
@@ -211,11 +195,11 @@ class Game  {
                     this.ctx.fillStyle = c_white //empty
                     this.ctx.fillRect(j * w, i * h, scale * w, scale * h)
                 }else if (val===1){
-                    // console.log((`Drawing ${j}${i} ${val} PENALTY`))
+                     // console.log((`Drawing ${j}${i} ${val} PENALTY`))
                     this.ctx.fillStyle = c_black //penalty
                     this.ctx.fillRect(j * w, i * h, scale*w, scale*h)
                 }else if (val===2){
-                    // console.log((`Drawing ${j}${i} ${val} PENALTY`))
+                     // console.log((`Drawing ${j}${i} ${val} PENALTY`))
                     this.ctx.fillStyle = c_red //penalty
                     this.ctx.fillRect(j * w, i * h, scale*w, scale*h)
                 }
@@ -234,7 +218,7 @@ class Game  {
         this.robot.draw([loc[0],loc[1]])
     }
     draw_finished_overlay(){
-        if (! this.playing){
+        if (this.playing){
             var c_overlay = 'rgba(0,0,0,0.2)';
             var c_text = 'rgba(255,255,255,1.0)';
             this.ctx.fillStyle = c_overlay;
@@ -293,7 +277,7 @@ class Game  {
         var dx = DIRECTION[this.current_action][0]
 
         if (dx === 0 && dy ===0){
-            var font_h = 30
+             var font_h = 30
             this.ctx.font = (`${font_h}px serif`)// '30px serif';
             this.ctx.textAlign = 'center';
             this.ctx.fillStyle = arrow_color;
@@ -420,21 +404,82 @@ class Game  {
         }
     }
 
-    load_empty_world(){
-        for(let r=0; r<7;r++){
-            for(let c=0; c<7;c++){
-                this.world_data[r][c] = this.empty_world[r][c]
-            }
-        }
-    }
     post_close(){
-        // $.post(render_route, {advance: 1 });
-        user_input.store('button','continue')
-        this.ctx.clearRect(0,0,this.can_w,this.can_h);
-        if (game_end_redirect){location.replace(render_route)}
-        // this.is_closed = true;
-        this.load_empty_world()
+        $.post(render_route, {advance: 1 });
+        // ctx.clearRect(0,0,can.width,can.height);
+        location.replace(render_route)
+        this.is_closed = true;
+
+        // const XHR = new XMLHttpRequest();
+        // const FD = new FormData();
+        // FD.append('submit_continue', 'submit_continue');
+        // // XHR.addEventListener('load', (event) => { alert('Yeah! Data sent and response loaded.'); });  // Define what happens on successful data submission
+        // XHR.addEventListener('error', (event) => { alert('Oops! Something went wrong.'); }); // Define what happens in case of an error
+        // XHR.open('POST', host); // Set up our request
+        // XHR.send(FD);// Send our FormData object; HTTP headers are set automatically
+        // this.is_closed = this;
+
     }
 
 } // End of Class Game
 
+class UserInput {
+    constructor() {
+        this.no_key = {'keypress':'None'}
+        this.last_key = this.no_key
+    }
+    store (key){
+        console.log(key)
+        this.last_key = key
+    }
+    read_buffer(){
+        const res = this.last_key
+        this.last_key = this.no_key
+        return res
+    }
+}
+
+let user_input = new UserInput()
+let G = new Game([1,0,3,3,1,0]);
+G.render()
+
+$(document).keydown(function(e) {
+    if (e.keyCode === 37) {  if (G.playing) user_input.store({'keypress':'left'})
+    } else if (e.keyCode === 38) { if (G.playing)  user_input.store({'keypress':'up'}) //up
+    } else if (e.keyCode === 39) { if (G.playing)  user_input.store({'keypress':'right'}) //right
+    } else if (e.keyCode === 40) { if (G.playing)  user_input.store({'keypress':'down'}) //down
+    } else if (e.keyCode === 32) { if (G.playing)  user_input.store({'keypress':'spacebar'})
+    } // else {   console.log(e) }
+})
+$(document).ready(function() {
+
+    const socket = io();
+
+    let G = new Game(1,[2,1,3,3,5,5]);
+
+    // Emit actions on .js event ######################################################
+    setInterval(function() {
+        socket.emit('time');
+        send_msg =  user_input.read_buffer()
+        socket.emit(update_gamestate_name, send_msg)
+    }, update_rate) // 1 millisecond is almost close to continu
+
+
+    // Update game data on response from server ##########################################
+    socket.on(update_gamestate_name, (data)=>{
+        G.update(data)
+        G.render()
+    })
+    })
+//
+//
+//
+//     // console.log(G.preview_fun());
+//      console.log(G.drawWorld());
+//  console.log(G.draw_players());
+//   console.log(G.draw_finished_overlay());
+//   G.draw_penalty_overlay()
+//  G.draw_penalty_counter()
+// G.draw_move_counter()
+// G.draw_timers()
+// // console.log(Game.phone_number.landline);

@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% block title %} Pursuit Game {% endblock %}
+
+{#<!-- Specific Page CSS goes HERE  -->#}
+{% block stylesheets %}
+{% endblock stylesheets %}#}
+{% block content %}
+<main>
+  <div id = "master-frame">
+
+    <div id="canvas-frame">
+      <canvas id="canvas"  style = "border: 1px solid blue" width="700" height="700"></canvas>
+    </div>
+
+    <div id="survey-frame">
+      <form id="survey-form">
+        <table id = survey-table></table>
+      </form>
+      <p id = 'survey-incomplete'> Please awnser every question of the survey</p>
+      <button id="submit-survey-button">Submit</button>
+    </div>
+
+
+    <div id="info-frame">
+      <h1 id = 'info-page-title'>Title</h1>
+      <img id="info-page-img"
+           src="https://s3-alpha.figma.com/hub/file/948140848/1f4d8ea7-e9d9-48b7-b70c-819482fb10fb-cover.png" alt="img">
+      <div id="info-page-text">
+        <p> This is some smaple text</p>
+      </div>
+
+      <div id="nav-buttons-frame">
+        <button id="back-button">Back</button>
+        <button id="continue-button">Continue</button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+  <script script src="{{ url_for('static', filename='scripts/client_socket.js') }}"></script>
+  <script script src="{{ url_for('static', filename='scripts/game_obj.js') }}"></script>
+  <script script src="{{ url_for('static', filename='scripts/page_handler.js') }}"></script>
+  <script script src="{{ url_for('static', filename='scripts/page_content.js') }}"></script>
+
+
+  <script>
+
+    const FRAMES = ['canvas-frame','info-frame','survey-frame','nav-buttons-frame','submit-survey-button']
+    // const BUTTONS = {'info-frame': 'nav-buttons-frame', 'survey-frame': 'submit-survey-button'}
+    const BUTTONS = {'info-frame': 'nav-buttons-frame', 'survey-frame': 'submit-survey-button'}
+
+    const HAS_NAV_BUTTONS = ['info-frame']
+    spawn_elements()
+    var current_view = '';
+    const update_rate = 100; // in miliseconds
+    const host = 'http://192.168.0.137:8080'
+    const render_route = "/"
+    const game_end_redirect = false
+
+
+    const masterFrame = document.getElementById("master-frame");
+    masterFrame.style.position = 'absolute'
+    masterFrame.style.height = '700px'
+    masterFrame.style.width = "80%";
+    masterFrame.style.margin = "auto";
+    masterFrame.style.top = "100px";
+    masterFrame.style.left = "10%";
+    masterFrame.style.border = '1px solid red'
+
+    // INFO FRAME ==========================================
+    const infoPage = document.getElementById("info-frame");
+    infoPage.style.position = 'absolute'
+    infoPage.style.top = "0%"//0.1*masterFrame.clientHeight + 'px';
+    infoPage.style.height ="100%" //0.9*masterFrame.clientHeight + 'px';
+    infoPage.style.width = masterFrame.clientWidth + 'px';
+    infoPage.style.border = '1px solid blue'
+
+
+    const infoPageTitle = document.getElementById("info-page-title");
+    infoPageTitle.style.height = 0.1*infoPage.clientHeight + 'px';
+    infoPageTitle.style.width = infoPage.clientWidth + 'px';
+    infoPageTitle.style.textAlign = 'center'
+    infoPageTitle.style.top = 0.25*infoPage.clientHeight  - infoPageTitle.height / 2 + 'px';
+    infoPageTitle.style.left =  infoPage.clientWidth / 2 - infoPageTitle.width / 2 + 'px';
+    // infoPageText.style.whiteSpace = 'nowrap'
+    //   infoPageText.style.overflow = 'hidden'
+    // infoPageText.style.position = 'absolute'
+
+    const infoPageImg = document.getElementById("info-page-img");
+    infoPageImg.style.height = "75%"//0.5*infoPage.clientHeight + 'px';
+    infoPageImg.style.top = 1.25*infoPageTitle.clientHeight
+    infoPageImg.style.left = infoPage.clientWidth / 2 - infoPageImg.clientWidth / 2 + 'px';
+    infoPageImg.style.position = 'absolute'
+
+    const infoPageText = document.getElementById("info-page-text");
+    // infoPageText.style.height = "10%"// 0.5*infoPage.clientHeight + 'px';
+    infoPageText.style.width = infoPage.clientWidth + 'px';
+    // infoPageText.style.top = "50%"//0.25*infoPage.clientHeight  - infoPageText.height / 2 + 'px';
+    infoPageText.style.left =  infoPage.clientWidth / 2 - infoPageText.width / 2 + 'px';
+    infoPageText.style.textOverflow = 'ellipsis'
+    infoPageText.style.fontSize = 15+'px'
+
+
+
+    // NAV-Buttons ==========================================
+    const navButtons = document.getElementById("nav-buttons-frame");
+    navButtons.style.display = 'flex'
+    navButtons.style.justifyContent = 'center'
+    navButtons.style.alignItems = 'center'
+    navButtons.style.position = 'absolute'
+    navButtons.style.height = 30 + 'px';
+    navButtons.style.width =  masterFrame.clientWidth + 'px';
+    navButtons.style.top =  "100%"//masterFrame.clientHeight + 'px';
+    navButtons.style.border = '1px solid blue'
+
+    const backButton = document.getElementById("back-button");
+    backButton.style.height = navButtons.clientHeight + 'px';
+    backButton.style.width = '40%'
+    backButton.style.margin = '0 5%'
+    // backButton.style.right = '20%'
+    backButton.addEventListener("click", function() { user_input.store('button','back') });
+
+
+    const continueButton = document.getElementById("continue-button");
+    continueButton.style.height = navButtons.clientHeight + 'px';
+    continueButton.style.width = '35%'
+    continueButton.style.margin = '0 5%'
+    // continueButton.style.left = '20%'
+    continueButton.addEventListener("click", function() { user_input.store('button','continue')});
+
+    // Survey-Frame ==========================================
+    const surveyFrame = document.getElementById("survey-frame");
+    surveyFrame.style.position = 'absolute'
+    surveyFrame.style.height = masterFrame.clientHeight + 'px';
+    surveyFrame.style.width = masterFrame.clientWidth + 'px';
+
+    const surveyForm =  document.getElementById("survey-form");
+    surveyForm.style.width = "100%"
+    surveyForm.style.top = "10%"
+    surveyForm.style.position = 'absolute'
+    surveyForm.style.border = '1px solid blue'
+
+    const table = document.getElementById("survey-table");
+    table.style.textAlign = "center";
+    table.style.margin = "auto";
+    table.style.width = "80%";
+    table.style.right = '10%';
+    table.style.tableLayout = "fixed" ;
+
+    const surveyIncomplete =  document.getElementById("survey-incomplete");
+    surveyIncomplete.style.width = "100%"
+    surveyIncomplete.style.top = "90%"
+    surveyIncomplete.style.position = 'absolute'
+    surveyIncomplete.style.color = 'red'
+    surveyIncomplete.style.textAlign = 'center'
+    surveyForm.style.border = '1px solid blue'
+    hide('survey-incomplete')
+
+    const submitButton = document.getElementById("submit-survey-button");
+    submitButton.style.position = 'absolute';
+    submitButton.style.transform = 'translate(-50%,-50%)';
+    submitButton.style.width = '15%'
+    submitButton.style.top = '100%';
+    submitButton.style.left = masterFrame.clientWidth/2- submitButton.clientWidth/2 + 'px'
+
+    submitButton.addEventListener("click", function() {
+      var n_questions = 3
+      var responses = {}
+      var has_empty_response = false;
+      for (var iq = 1; iq <= n_questions; iq++) {
+        const qname = "q"+iq
+        const query = 'input[name="'+qname+'"]:checked'
+        const radio = document.querySelector(query);
+        console.log(radio)
+        if (radio === null){
+          responses[qname] = null
+          has_empty_response = true
+        } else{
+          responses[qname] = radio.value
+        }
+      }
+      if (has_empty_response){ show('survey-incomplete')
+      } else{ hide('survey-incomplete'); user_input.store('submit_survey',responses) }
+
+    });
+
+
+
+    //
+    // const backButton = document.getElementById("back-button");
+    // backButton.style.width = '30%'
+    // backButton.style.margin = '0 5%'
+    // const continueButton = document.getElementById("continue-button");
+    // continueButton.style.width = '30%'
+    // continueButton.style.margin = '0 5%'
+    let user_input = new UserInput()
+    let G = new Game([1,0,3,3,1,0]);
+
+    //
+
+    G.render()
+    hide_all()
+    show('info-frame')
+    // $(document).keydown(  user_input.store('keypress',decode_keypress(e)))
+
+
+    $(document).keydown(function(e) { user_input.store('keypress',decode_keypress(e))})
+
+    $(document).ready(function() {
+      const socket = io();
+      function client_update() {
+        const user_input_buffer =  user_input.read_buffer()
+        socket.emit('update_gamestate', user_input_buffer)
+      }
+
+      // Emit actions on .js event ######################################################
+      setInterval(client_update, update_rate) // 1 millisecond is almost close to continu
+
+
+      // Update game data on response from server ##########################################
+      socket.on( 'update_gamestate', (data)=>{
+        // console.log(data)
+        if (data['view'] !== current_view){
+            hide_all(); show(data['view'])
+            current_view = data['view']
+            console.log('Changing view to '+current_view)
+        }
+
+        if (data['view'] === 'info-frame'){
+          if (data['img']=== null){ hide('info-page-img')}
+          else{show('info-page-img'); infoPageImg.src = data['img']}
+          infoPageTitle.innerHTML = data['title']
+          infoPageText.innerHTML  = data['content']
+
+          // infoPageImg.style.height = infoPage.clientHeight + 'px';
+          // infoPageImg.style.top = infoPage.clientHeight  - infoPageImg.height / 2 + 'px';
+          // infoPageImg.style.left =  infoPage.clientWidth / 2 - infoPageImg.width / 2 + 'px';
+          // infoPageImg.style.position = 'absolute'
+
+        }
+
+
+        if (data['view'] !== 'canvas-frame'){
+          G.update(data)
+          G.render()
+        }
+
+
+
+      })
+    })
+
+  </script>
+
+
+</main>
+
+{% endblock %}
+
