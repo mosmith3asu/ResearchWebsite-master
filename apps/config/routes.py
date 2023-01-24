@@ -1,7 +1,8 @@
 from flask import render_template
 from jinja2 import TemplateNotFound
-from apps import session
+from .. import session
 from apps.static.PursuitGame.game_handler import GameHandler
+
 
 def add_routes(app):
 

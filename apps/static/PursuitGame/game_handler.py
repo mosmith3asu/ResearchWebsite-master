@@ -3,11 +3,12 @@ import copy
 import logging
 import math
 import time
+import itertools
 import numpy as np
-from apps.static.PursuitGame.make_worlds import WorldDefs
+
 from apps import Qfunctions
-# fname_Qfun = 'C:\\Users\\mason\\Desktop\\ResearchWebsite-master\\apps\\static\\PursuitGame\\Qfunctions.npz'
-# Qfunctions = np.load(fname_Qfun)
+from apps.static.PursuitGame.make_worlds import WorldDefs
+
 
 class GameHandler(object):
     @classmethod
@@ -109,10 +110,17 @@ class GameHandler(object):
             # self.a2idx[aname] = self.a2idx[aname]
             self.a2idx[tuple(self.a2move[aname])] = aname
 
-        self.current_action_idx = {}
-        self.current_action_idx['H'] = self.a2idx['wait']
-        self.current_action_idx['R'] = self.a2idx['wait']
-        self.current_action_idx['E'] = self.a2idx['wait']
+        # self.current_action_idx = {}
+        # self.current_action_idx['H'] = self.a2idx['wait']
+        # self.current_action_idx['R'] = self.a2idx['wait']
+        # self.current_action_idx['E'] = self.a2idx['wait']
+
+        # Buffer that cleares at begining of each move
+        self.move_buffer = {}
+        self.move_buffer['move_R'] = self.a2move['wait']
+        self.move_buffer['move_H'] = self.a2move['wait']
+        self.move_buffer['move_E'] = self.a2move['wait']
+
 
         self.slicek = {}
         self.slicek['R'] = slice(0,2)
@@ -120,7 +128,10 @@ class GameHandler(object):
         self.slicek['E'] = slice(4,6)
         self.prey_dist_power = 5
         self.prey_rationality = 1
+        self.robot_rationality = 1
+        self.sophistocation  = 4
         self.max_dist = math.dist([1,1],[5,5])
+        self.ijoint, self.solo2joint, self.joint2solo = self.init_conversion_mats()
 
 
         self.default_settings = {}
@@ -142,7 +153,7 @@ class GameHandler(object):
             executing = (self.timer == self.timer_max_val)
 
             if executing:
-                if verbose: print(f'EXECUTING:{self.a2name[self.current_action_idx["H"]]}')
+                if verbose: print(f'EXECUTING:{self.a2name[tuple(self.move_buffer["move_H"])]}')
                 players_finished = self.execute_players()
                 evader_finished = self.execute_evader(post_move_duration)
                 if players_finished and self.penalty_enable:
@@ -216,32 +227,30 @@ class GameHandler(object):
             self.move_enables['H'] = True
             self.move_enables['E'] = True
             self.penalty_enable =True
+            for key in self.move_buffer.keys():
+                self.move_buffer[key] = self.a2move['wait']
 
-    def execute_players(self):
-        move_R = self.a2move[self.current_action_idx['R']]
-        move_H = self.a2move[self.current_action_idx['H']]
+    def execute_players(self,verbose=True):
+        move_R = self.decide_robot_move() if self.move_enables['R'] else self.a2move['wait']
+        move_H = self.move_buffer['move_H'] if self.move_enables['H'] else self.a2move['wait']
         move_E = self.a2move['wait']
 
-        move_R = move_R if self.move_enables['R'] else self.a2move['wait']
-        move_H = move_H if self.move_enables['H'] else self.a2move['wait']
-        move_E = move_E if self.move_enables['E'] else self.a2move['wait']
-
         # IF PRACTICE ###################
-        if self.iworld ==0:
-            move_R = [-move_H[0],move_H[1]]
+        if self.iworld ==0: move_R = [-move_H[0],move_H[1]]
 
         new_state = np.array(self.state).copy()
         for _slice,_move in zip([slice(0,2),slice(2,4),slice(4,6)],[move_R,move_H,move_E]):
             new_state[_slice] = self.check_move_wall(new_state[_slice],_move)
 
         self.state = [int(s) for s in new_state]
-        finished = True
 
+        finished = True
         if finished:
             if self.move_enables['H']: # only write no-action once
-                self.current_action_idx['H'] = self.a2idx['wait']
-            self.move_enables['R'] = False
+                self.move_buffer['move_H'] = self.a2move['wait']
             self.move_enables['H'] = False
+            self.move_enables['R'] = False
+
         return finished
 
     def execute_evader(self,t_post_move):
@@ -271,15 +280,32 @@ class GameHandler(object):
             self.move_enables['E'] = False
         return finished
     def sample_user_input(self,key_input,verbose = False):
+        # Check initialized
+        if  self.move_buffer['move_H'] is None:
+            self.move_buffer['move_H'] = self.a2move['wait']
+
+        # Read key input
         if key_input == 'None':
-            new_action = self.current_action_idx['H']
+            new_action = self.move_buffer['move_H']
         elif key_input in self.a2idx.keys():
-            new_action = self.a2idx[key_input]
+            new_action = self.a2move[key_input]
             if verbose: print(f'KEY INPUT:{key_input}=>{new_action}')
         else:
-            new_action = self.current_action_idx['H']
+            new_action = self.move_buffer['move_H']
             logging.warning(f'User input unknown: {key_input}')
-        self.current_action_idx['H'] = new_action
+
+        # Store new move
+        self.move_buffer['move_H'] = new_action
+
+        # if key_input == 'None':
+        #     new_action = self.current_action_idx['H']
+        # elif key_input in self.a2idx.keys():
+        #     new_action = self.a2idx[key_input]
+        #     if verbose: print(f'KEY INPUT:{key_input}=>{new_action}')
+        # else:
+        #     new_action = self.current_action_idx['H']
+        #     logging.warning(f'User input unknown: {key_input}')
+        # self.current_action_idx['H'] = new_action
 
     def get_gamestate(self):
         data = {}
@@ -292,7 +318,11 @@ class GameHandler(object):
         data['playing'] = not self.done
         data['is_finished'] = self.is_finished
         data['penalty_states'] = self.penalty_states
-        data['current_action'] = self.current_action_idx['H']
+        # data['current_action'] = self.current_action_idx['H']
+        # if self.move_buffer["move_H"] is None:  move_H =  self.a2move['wait']
+        # else:  move_H = self.move_buffer["move_H"]
+        # move_H = self.a2idx['wait'] if self.move_buffer["move_H"] is None else self.move_buffer["move_H"]
+        data['current_action'] = self.a2idx[tuple(self.move_buffer["move_H"])]
         return data
 
 
@@ -333,3 +363,51 @@ class GameHandler(object):
         return move_E
     def softmax_stable(self,x):
         return(np.exp(x - np.max(x)) / np.exp(x - np.max(x)).sum())
+
+    def decide_robot_move(self):
+        iR = 0
+        n_agents = 2
+        n_joint_act = 25
+        n_ego_act = 5
+        sophistocation = self.sophistocation
+        rationality = self.robot_rationality
+        x0,y0,x1,y1,x2,y2 = list(self.state)
+
+        # Set up quality and probability arrays -------------
+        qAjointk = self.Q[:,x0,y0,x1,y1,x2,y2,:]
+        pdAjointk = np.ones([n_agents, n_joint_act]) / n_joint_act
+        qAegok = np.empty([n_agents,n_ego_act])
+        pdAegok = np.ones([n_agents,n_ego_act])/n_ego_act
+
+        # Perform recursive simulation -------------
+        for isoph in range(sophistocation):
+            new_pdAjointk = np.zeros([n_agents, n_joint_act])
+            for k in range(n_agents):
+                ijoint = self.ijoint[k, :, :] # k, ak, idxs
+                qAjoint_conditioned = qAjointk[k, :] * pdAjointk[int(not k), :] # print(f'{np.shape(qAjoint_conditioned)} x {np.shape(ijoint)}')
+
+                qAegok[k, :] = qAjoint_conditioned @ ijoint.T
+                pdAegok[k, :] = self.softmax_stable(rationality * qAegok[k, :])
+                new_pdAjointk[k, :] = pdAegok[k,:] @ ijoint / n_ego_act
+            pdAjointk = new_pdAjointk.copy()
+
+        # Sample from R's probability -------------
+        # ichoice = np.random.choice(np.arange(n_ego_act), p=pdAegok[iR])
+        ichoice = np.argmax(pdAegok[iR])
+        move_R = self.a2move[ichoice]
+        return move_R
+
+
+    def init_conversion_mats(self):
+        n_agents = 2
+        joint2solo = np.array(list(itertools.product(*[np.arange(5), np.arange(5)])), dtype=int)
+        solo2joint = np.zeros([5, 5], dtype=int)
+        for aJ, joint_action in enumerate(joint2solo):
+            aR, aH = joint_action
+            solo2joint[aR, aH] = aJ
+        ijoint = np.zeros([2, 5, 25], dtype=np.float32)
+        for k in range(n_agents):
+            for ak in range(5):
+                idxs = np.array(np.where(joint2solo[:, k] == ak)).flatten()
+                ijoint[k, ak, idxs] = 1
+        return ijoint,solo2joint,joint2solo

@@ -1,12 +1,15 @@
 import logging
 import math
-from gym import Env
+from itertools import count
+
 import torch
+from gym import Env
 from torch.utils.data.sampler import WeightedRandomSampler
+from utilities.config_manager import CFG
 from utilities.learning_utils import CPT_Handler
 from utilities.make_worlds import WorldDefs
-from utilities.config_manager import CFG
-from itertools import count
+
+
 class PursuitEvastionGame(Env):
 
     def __init__(self,iWorld,device,dtype,seed=None):

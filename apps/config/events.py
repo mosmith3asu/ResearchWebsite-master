@@ -1,6 +1,7 @@
 from flask import request
-from apps.static.PursuitGame.page_assets import test_views
+
 from apps import session
+from apps.static.PursuitGame.page_assets import test_views
 
 
 def add_events(socketio):

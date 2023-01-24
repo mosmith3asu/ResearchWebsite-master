@@ -1,8 +1,8 @@
 from uuid import uuid4
+import numpy as np
 from flask import Flask,session
 from flask_session import Session
 from flask_socketio import SocketIO
-import numpy as np
 
 fname_Qfun = 'C:\\Users\\mason\\Desktop\\ResearchWebsite-master\\apps\\static\\PursuitGame\\Qfunctions.npz'
 Qfunctions = np.load(fname_Qfun)
