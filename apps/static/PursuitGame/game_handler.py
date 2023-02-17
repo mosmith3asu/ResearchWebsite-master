@@ -17,12 +17,23 @@ class GameHandler(object):
 
     @classmethod
     def new(cls):
+        INIT_WORLD = 1
         treatment = GameHandler.sample_treatment()
-        return GameHandler(iworld=1,treatment=treatment)
+        return GameHandler(iworld=INIT_WORLD,treatment=treatment)
 
     def __init__(self,iworld,treatment,debug = False):
         self.debug = debug
+        self.iworld = iworld
+        self.treatment = treatment
+        self.done = False  # game is done and disable move
+        self.is_finished = False  # ready to advance to next pate
         self.name = f'W{iworld}{treatment}'
+        print(f'[{self.name}] INITIALIZING GAME:')
+
+        # Settings
+        self.disable_practice_prey = True
+        self.penalty_enable = True
+
 
         if iworld==0:
             self.pen_reward = -3
@@ -39,15 +50,9 @@ class GameHandler(object):
                 self.pen_reward = -3
                 self.pen_prob = 0.5
             else:  raise Exception('Unknown treatment in GameHandler')
-        self.Q = Qfunctions[self.name].copy()
+            self.Q = Qfunctions[self.name].copy()
+            print(f'[{self.name}] Loaded Q-Function: {self.Q.shape}')
 
-
-        print(f'[{self.name}] INITIALIZING GAME:')
-        print(f'[{self.name}] Loaded Q-Function: {self.Q.shape}')
-        self.iworld = iworld
-        self.treatment = treatment
-        self.done = False # game is done and disable move
-        self.is_finished = False # ready to advance to next pate
 
         self.state = list(np.array(WorldDefs.world[iworld].start_obs).flatten())
         self.state = [int(s) for s in self.state ]
@@ -59,7 +64,7 @@ class GameHandler(object):
         self._walls = WorldDefs.world[iworld].walls
         # print(self.penalty_states)
 
-        self.penalty_enable = True
+
         self.penalty_counter = 0
         self.remaining_moves = 20 if not self.debug else 3
         self.move_enables = {}
@@ -193,15 +198,16 @@ class GameHandler(object):
         return done
 
     def new_world(self,iworld=None):
+        print(f'STARTING NEW WORLD {self.iworld}')
         # for key in self.default_settings.keys():
         #     self.__dict__[key] =  self.default_settings[key]+
         #
-        iworld = self.iworld+1 if iworld is None else iworld
+        next_iworld = self.iworld+1 if iworld is None else iworld
         treatment = self.treatment
-        self.__init__(iworld,treatment=self.treatment)
+        self.__init__(next_iworld,treatment=self.treatment)
         # for key in self.default_settings.keys():
         #     self.__dict__[key] = copy.deepcopy(self.default_settings[key])
-        self.iworld = iworld
+        self.iworld = next_iworld
         # self.done = False
 
     def roll_penalty(self,curr_pos):
@@ -231,12 +237,14 @@ class GameHandler(object):
                 self.move_buffer[key] = self.a2move['wait']
 
     def execute_players(self,verbose=True):
-        move_R = self.decide_robot_move() if self.move_enables['R'] else self.a2move['wait']
+        move_R = self.decide_robot_move() if self.move_enables['R'] else self.a2move['wait']  #
         move_H = self.move_buffer['move_H'] if self.move_enables['H'] else self.a2move['wait']
         move_E = self.a2move['wait']
 
-        # IF PRACTICE ###################
-        if self.iworld ==0: move_R = [-move_H[0],move_H[1]]
+        if self.iworld == 0: # in practice
+            # if self.debug:
+            print(f'-Overwriting move_R...')
+            move_R = [-move_H[0],move_H[1]] # mirror H
 
         new_state = np.array(self.state).copy()
         for _slice,_move in zip([slice(0,2),slice(2,4),slice(4,6)],[move_R,move_H,move_E]):
@@ -268,7 +276,8 @@ class GameHandler(object):
             finished = True
 
         # IF PRACTICE ############
-        if self.iworld == 0:
+        move_E = self.a2move['wait'] ##################################################################### ERROR #####
+        if self.iworld == 0 and self.disable_practice_prey:
             move_E = self.a2move['wait']
 
         new_state = np.array(self.state).copy()
@@ -339,6 +348,40 @@ class GameHandler(object):
         slice_H = self.slicek['H']
         slice_E = self.slicek['E']
 
+        def prey_dist2q(dists,dmax):
+            q_scale = 2  # power given to weights
+            q_pow = 1
+            pref_closer =min(0.5,(dists.max()-dists.min())/dmax) #             pref_closer = 0.3
+            # print(f'({dists.max().round(4)}-{dists.min().round(4)}/{np.round(dmax,4)} pref={2*pref_closer}')
+            w_dists =(0.5+pref_closer)*dists.min() + (0.5-pref_closer)*dists.max() # weighted dists
+            q_res = q_scale*np.power(w_dists,q_pow)
+            return q_res
+
+
+            # u_dists = dists / dmax  # normalize unit distances
+            # w_diff = (u_dists[0] - u_dists[1])  # weight that devalues farther agent
+            # w_diff = np.sign(w_diff)* np.power(np.abs(w_diff),w_pow)
+            # wk_closer = np.array([1 - w_diff, 1 + w_diff])  # weights for averaging
+            # wk_closer[wk_closer < 0] = 0
+            #
+            # wk_closer = np.size(dists) * wk_closer / wk_closer.sum()
+            # weighted_dists = dists * wk_closer
+            # q_res = np.mean(weighted_dists)
+            # return np.power(q_res,q_pow)
+
+            # w_pow = 2  # power given to weights
+            # # w_lb = 0; w_ub = 2;  # define weighting bounds
+            # u_dists = dists / dmax  # normalize unit distances
+            # w_diff = (u_dists[0] - u_dists[1])  # weight that devalues farther agent
+            # wk_closer = np.array([0.5 - w_diff, 0.5 + w_diff])  # weights for averaging
+            # wk_closer[wk_closer < 0] = 0;
+            # wk_closer[wk_closer > 1] = 1  # bound weights [0,1]
+            # wk_closer = np.power(wk_closer, w_pow)
+            # wk_closer = wk_closer / wk_closer.sum()
+            # weighted_dists = dists * wk_closer
+            # q_res = np.sum(weighted_dists)
+            # return q_res
+
         # Decide Prey action
         qA = np.zeros(n_ego_actions)
         for ia in range(n_ego_actions):
@@ -347,17 +390,23 @@ class GameHandler(object):
             is_valid = not any([np.all(new_pos == w) for w in self._walls])
 
             if is_valid:
-                move_Joint = np.array([move_R + move_H + move_E])
-                new_state = (np.array(self.state) + move_Joint).flatten()
-                dist2k = [0,0]
-                for k,_slice in enumerate([slice_R, slice_H]):
-                    d = math.dist(new_state[_slice], new_state[slice_E])
-                    dist2k[k] = self.max_dist**3-(self.max_dist-d)**3
-                qA[ia] = np.mean(dist2k)
+                move_Joint = np.array([move_R + move_H + move_E],dtype=float)
+                new_state = (np.array(self.state,dtype=float) + move_Joint).flatten()
+
+                dist2k = np.array([0., 0.],dtype=float)
+                for k, _slice in enumerate([slice_R, slice_H]):
+                    dist2k[k] = math.dist(new_state[_slice], new_state[slice_E])
+                    # print(f'{new_state[_slice]} <=> {new_state[slice_E]} = {dist2k[k]}')
+                qA[ia] = prey_dist2q(dist2k, self.max_dist)
+
+
             else: qA[ia] = q_inadmissable
 
 
         pA = self.softmax_stable(self.prey_rationality * qA)
+        print( '\t'.join([f'{self.a2name[i]} = {pA[i].round(3)}' for i in range(5)])
+)
+        # print(f'pA[evader]={pA.round(3)}')
         ichoice = np.random.choice(np.arange(n_ego_actions),p=pA)
         move_E = self.a2move[ichoice]
         return move_E
@@ -365,6 +414,10 @@ class GameHandler(object):
         return(np.exp(x - np.max(x)) / np.exp(x - np.max(x)).sum())
 
     def decide_robot_move(self):
+        if self.iworld==0:
+            # if self.debug:
+            print(f'-Skipping decide_robot_move()...')
+            return None # in practice; overwritten in execute_players()
         iR = 0
         n_agents = 2
         n_joint_act = 25

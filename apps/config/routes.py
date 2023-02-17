@@ -66,15 +66,16 @@ def add_routes(app):
 
 
     routes = {}
-    routes['/'] = render_PursuitGame #index
+    routes['/'] = index
     routes['/index'] = index
-    routes['/about'] = about
+
     routes['/contact'] = contact
     routes['/participate'] = participate
     routes['/render_iRobot'] = render_iRobot
     routes['/render_PursuitGame'] = render_PursuitGame
     routes['/research_goals'] = research_goals
     routes['/researchers'] = researchers
+    routes['/about'] = about
 
     for endpoint in routes.keys():
         app.add_url_rule(endpoint, view_func=routes[endpoint], methods=['GET', 'POST'])

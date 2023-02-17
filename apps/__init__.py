@@ -1,3 +1,4 @@
+import logging
 from uuid import uuid4
 import numpy as np
 from flask import Flask,session
@@ -17,6 +18,7 @@ APP_KEY = '92659'
 app.debug = DEBUG
 app.config['SECRET_KEY'] = APP_KEY
 app.config["SESSION_PERMANENT"] = False
+# app.config["SESSION_PERMANENT"] = True; logging.warning('Session is  permanant')
 app.config[ "SESSION_TYPE"] = "filesystem"  # We set the session type to the filesystem,
 app.config['SECRET_KEY'] = uuid4().hex  # Configure secret key for encryption
 app.config["TEMPLATES_AUTO_RELOAD"] = True

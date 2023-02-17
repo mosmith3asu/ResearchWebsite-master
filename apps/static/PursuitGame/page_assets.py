@@ -134,27 +134,31 @@ TEXT['begin instructions'] = '<ul>' \
 '</ul>' \
 
 
-test_views = [{'view':'info-frame','img': None,'title': 'Welcome!', 'content':TEXT['consent'],'fontSize':"14px",'textAlign':"left",'backButton': True},
-              # {'view': 'background-frame','title': 'Background', 'content': "Please provide background information"},
-              # {'view': 'info-frame', 'img': None, 'title': 'Survey', 'content': TEXT['survey info'],'fontSize':"14px"},
-              # {'view':'survey-frame'},
-              # {'view': 'info-frame', 'img': None, 'title': 'Instructions', 'content': TEXT['begin instructions'], 'backButton': False},
-              # {'view':'info-frame','img': GithubImgs['movement'],'title': 'Movement', 'content':TEXT['movement'] ,'backButton':True},
-              # {'view':'info-frame','img': GithubImgs['turns'],'title': 'Turns', 'content':TEXT['turns']},
-              # {'view': 'info-frame', 'img': GithubImgs['penalties'], 'title': 'Penalties', 'content': TEXT['penalties']},
-              # {'view': 'info-frame', 'img': GithubImgs['objective'] , 'title': 'Objective', 'content': TEXT['objective'] },
-              # {'view': 'info-frame', 'img': None, 'title': 'Practice', 'content': TEXT['practice']},
-              {'view':'canvas-frame'},
-              {'view': 'info-frame', 'img': None, 'title': 'Ready to Begin?', 'content': TEXT['practice'],'backButton': False},
-              # {'view': 'info-frame', 'img': None, 'title': 'Penalty Information', 'content': TEXT['treatment'],
-              #  'fontSize': "50px", 'textAlign': "center", 'backButton': False},
-              # {'view': 'canvas-frame'},
-              # {'view': 'survey-frame'},
-              # {'view': 'info-frame', 'img': None, 'title': 'Penalty Information', 'content': TEXT['treatment'],
-              #  'fontSize': "50px", 'textAlign': "center"},
-              # {'view': 'canvas-frame'},
-              # {'view': 'survey-frame'},
-              ]
+test_views = [
+    ######## BACKGROUND ###############
+    {'view':'info-frame','img': None,'title': 'Welcome!', 'content':TEXT['consent'],'fontSize':"14px",'textAlign':"left",'backButton': True},
+    # {'view': 'background-frame','title': 'Background', 'content': "Please provide background information"},
+    # {'view': 'info-frame', 'img': None, 'title': 'Survey', 'content': TEXT['survey info'],'fontSize':"14px"},
+    # {'view':'survey-frame'},
+    ######## INSTRUCTIONS ###############
+    # {'view': 'info-frame', 'img': None, 'title': 'Instructions', 'content': TEXT['begin instructions'], 'backButton': False},
+    # {'view':'info-frame','img': GithubImgs['movement'],'title': 'Movement', 'content':TEXT['movement'] ,'backButton':True},
+    # {'view':'info-frame','img': GithubImgs['turns'],'title': 'Turns', 'content':TEXT['turns']},
+    # {'view': 'info-frame', 'img': GithubImgs['penalties'], 'title': 'Penalties', 'content': TEXT['penalties']},
+    # {'view': 'info-frame', 'img': GithubImgs['objective'] , 'title': 'Objective', 'content': TEXT['objective'] },
+    ######## PRACTICE ###############
+    {'view': 'info-frame', 'img': None, 'title': 'Practice', 'content': TEXT['practice']},
+    {'view':'canvas-frame'},
+    {'view': 'info-frame', 'img': None, 'title': 'Ready to Begin?', 'content': TEXT['practice'],'backButton': False},
+    {'view': 'info-frame', 'img': None, 'title': 'Penalty Information', 'content': TEXT['treatment'],
+     'fontSize': "50px", 'textAlign': "center", 'backButton': False},
+    {'view': 'canvas-frame'},
+    {'view': 'survey-frame'},
+    {'view': 'info-frame', 'img': None, 'title': 'Penalty Information', 'content': TEXT['treatment'],
+     'fontSize': "50px", 'textAlign': "center"},
+    {'view': 'canvas-frame'},
+    {'view': 'survey-frame'},
+]
 
 for igame in range(7):
     test_views.append({'view': 'info-frame', 'img': None,

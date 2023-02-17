@@ -1,0 +1,92 @@
+/* ########### BASE ##################  */
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--c_body_bg) ;
+  color: var(--c_body_fg);
+}
+
+
+/* ########### FOOTER ##################  */
+
+.footer {
+  background-color: var(--c_footer_bg);
+  color: var(--c_footer_fg);
+  height: 10%;
+  /*padding-top: 1%;*/
+  /*margin-bottom: 50%;*/
+  margin-top: 5%;
+  alignment: bottom;
+}
+
+/* ########### NAV BAR ##################  */
+.topnav {
+  background-color: var(--c_header_bg) ;
+  color: var(--c_header_fg);
+  box-sizing: border-box;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 5px 20px;
+  height: 50px;
+}
+
+.topnav img.Rlogo {
+  padding: 0pt 0;
+  height: 100%;
+}
+.topnav img.Llogo {
+  padding: 0pt 0;
+  height: inherit;
+}
+.link_container{
+  margin: 0 0pt;
+  padding: 0 1%;
+  justify-self: right;
+  height: inherit;
+  width: 100%;
+  background-color:inherit;
+  display: flex;
+  justify-content: left;
+  align-items: inherit;
+  border: red;
+  border-style: dashed;
+
+
+
+
+}
+.link_container a {
+  background-color: inherit;
+  color: inherit;
+
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+
+  text-align: center;
+  padding: 14px 16px;
+}
+
+
+.link_container a:hover {
+  color: var(--c_secondary_muted) ;
+  background-color: var(--dc_darken);
+  box-shadow: inset 4px 4px var(--dc_darken2x);
+  border-bottom: var(--c_body_bg);
+  border-bottom-style: solid;
+  border-bottom-width: 3pt;
+}
+
+.link_container a.active {
+  color: var(--c_secondary);
+  background-color: var(--dc_darken);
+  box-shadow: inset 7px 7px var(--dc_darken2x);
+  border-bottom: var(--c_body_bg);
+  border-bottom-style: solid;
+  border-bottom-width: 5pt;
+}
+
