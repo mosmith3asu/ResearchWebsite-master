@@ -25,13 +25,15 @@ body {
   background-color: var(--c_header_bg) ;
   color: var(--c_header_fg);
   box-sizing: border-box;
-  margin: 0;
-  overflow: hidden;
+  margin: 10pt;
+  margin-top: 1%;
+  /*overflow: hidden;*/
   display: flex;
   justify-content: left;
   align-items: center;
   padding: 5px 20px;
   height: 50px;
+  border-radius: 25px;
 }
 
 .topnav img.Rlogo {
@@ -52,8 +54,8 @@ body {
   display: flex;
   justify-content: left;
   align-items: inherit;
-  border: red;
-  border-style: dashed;
+  /*border: red;*/
+  /*border-style: dashed;*/
 
 
 
@@ -79,14 +81,22 @@ body {
   border-bottom: var(--c_body_bg);
   border-bottom-style: solid;
   border-bottom-width: 3pt;
+  border-top: var(--c_header_bg);
+  border-top-style: solid;
+  border-top-width: 2pt;
 }
 
 .link_container a.active {
-  color: var(--c_secondary);
-  background-color: var(--dc_darken);
-  box-shadow: inset 7px 7px var(--dc_darken2x);
+  color: var(--c_secondary_fg);
+  background-color: var(--c_secondary);
+  box-shadow: inset 3px 3px var(--dc_darken3x);
   border-bottom: var(--c_body_bg);
   border-bottom-style: solid;
-  border-bottom-width: 5pt;
+  border-bottom-width: 4pt;
+  border-top: var(--c_header_bg);
+  border-top-style: solid;
+  border-top-width: 2pt;
+  height: auto;
+
 }
 

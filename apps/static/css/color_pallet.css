@@ -1,12 +1,13 @@
 :root {
   /*######### COLOR PALLET ###########*/
-  --c_primary60: rgba(38, 36, 36, 1);
+  /*--c_primary60: rgba(38, 36, 36, 1);*/
+  /*--c_primary30: rgba(18, 16, 16, 1);*/
+  /*--c_primary10: rgba(208, 206, 206, 1);*/
+
+  --c_primary10: rgba(38, 36, 36, 1);
   --c_primary30: rgba(18, 16, 16, 1);
-  --c_primary10: rgba(208, 206, 206, 1);
-  /*--c_secondary: rgba(128, 0, 50, 1);*/
-  /*--c_secondary_muted: rgba(88, 0, 10, 1);  --c_secondary_fg: rgba(0, 0, 0, 0.95);*/
-  /*--c_accent: rgba(255, 223, 0, 1);         --c_accent_fg: rgba(0, 0, 0, 0.95);*/
-  /*--c_accent_muted: rgba(175, 153, 0, 1);*/
+  --c_primary60: rgba(248, 246, 236, 1);
+
   --c_secondary_muted: rgba(175, 153, 0, 1);
   --c_secondary: rgba(255, 223, 0, 1);      --c_secondary_fg: rgba(0, 0, 0, 0.95);
   --c_accent: rgba(121, 0, 11, 1);          --c_accent_fg: rgba(0, 0, 0, 0.95);
@@ -24,6 +25,7 @@
   /*######### DYNAMIC COLORS ###########*/
   --dc_darken: rgba(0, 0, 0, .2);
   --dc_darken2x: rgba(0, 0, 0, .4);
+    --dc_darken3x: rgba(0, 0, 0, .6);
   --dc_lighten: rgba(240, 240, 240, .1);
   --dc_lighten2x: rgba(240, 240, 240, .3);
 
@@ -34,8 +36,11 @@
 
 
   /*######### BASE OBJECT COLORS ###########*/
-  --c_header_bg: var(--c_primary30);
-  --c_header_fg: var(--c_white);
+  /*--c_header_bg: var(--c_primary30);*/
+  /*--c_header_fg: var(--c_white);*/
+    --c_header_bg: var(--c_secondary);
+  --c_header_fg: var(--c_secondary_fg);
+
   --c_body_bg: var(--c_primary60);
   --c_body_fg: var(--c_white);
   --c_footer_bg: var(--c_primary30);
