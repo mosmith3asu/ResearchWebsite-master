@@ -12,6 +12,7 @@
   --c_secondary: rgba(255, 223, 0, 1);      --c_secondary_fg: rgba(0, 0, 0, 0.95);
   --c_accent: rgba(121, 0, 11, 1);          --c_accent_fg: rgba(0, 0, 0, 0.95);
   --c_accent_muted: rgba(88, 0, 10, 1);
+  --c_accent_muted2x: rgba(58, 0, 10, 1);
 
 
   --c_highlight: rgba(255, 255, 255, 1);

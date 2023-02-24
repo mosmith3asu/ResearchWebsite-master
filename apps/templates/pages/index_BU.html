@@ -1,0 +1,53 @@
+{% extends "layouts/base.html" %}
+{% block title %} Blank Page {% endblock %}
+
+{#<!-- Specific Page CSS goes HERE  -->#}
+{% block stylesheets %}{% endblock stylesheets %}#}
+{% block content %}
+<main>
+<!--    <section class="floating_section">-->
+    <section class="dark_section">
+        <h1>Advancing intelligent robots through interactive experiments with AI-powered partners</h1>
+        <h2>Contribute to the future of intelligent and interactive robotics by participating in one of our short,
+            online experiments. </h2>
+        <div class="col_links">
+            <button style="border-right: white"> about us </button>
+            <button style="border-right: white"> research goals </button>
+            <button style="border-right: white"> participation </button>
+            <button > contact </button>
+        </div>
+        <button class = "interactive_button" onclick="window.location.href='/participate'">Participate Now!</button>
+    </section>
+    <section class="normal_section">  <h1>Cognition-Aware Robots</h1>
+        <p>Our goal is to allow interactive robots to better understand humans
+            and their decision-making by integrating cognitive and economic models
+            into robotic controllers. By doing this, robots will be able to better plan
+            their actions to supplement and achieve human goals more effectively.</p>
+    </section>
+    <section class="normal_section">
+        <h1>Applications</h1>
+        <div class="panel_container">
+            <div class="panel">
+                <div class="panel_header">Manufacturing</div>
+                <img class="panel_image" src="static/img/manufacturing.png" alt="manufacturing img">
+                <div class="panel_descr">description</div>
+            </div>
+            <div class="panel">
+                <div class="panel_header">Search and Rescue</div>
+                <img class="panel_image" src="static/img/searchandrescue.jpg" alt="manufacturing img">
+                <div class="panel_descr">description</div>
+            </div>
+
+            <div class="panel">
+                <div class="panel_header">Social Robotics</div>
+                <img class="panel_image" src="static/img/socialrobots.jpg" alt="manufacturing img">
+
+                <div class="panel_descr">description</div>
+            </div>
+        </div>
+
+    </section>
+
+</main>
+
+{% endblock %}

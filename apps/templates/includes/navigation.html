@@ -1,14 +1,40 @@
+<div id='navMaster' class="navMaster">
+  <div class="topnav">
+    <!--  <img class="Llogo" src="static/img/logo.jpg" alt="right logo">-->
+    <div  class="link_container">
+      <a id='home' class="inactive" href="/home" onclick="navSelect('home')">Home</a>
+      <a id='participate' class="inactive" href="/participate" onclick="navSelect('participate')">Participate</a>
+      <a id='contact' class="inactive" href="/contact" onclick="navSelect('contact')">Contact</a>
+      <a id='about' class="inactive" href="/about" onclick="navSelect('about')">About</a>
+    </div>
+    <img class="Rlogo" src="static/img/ASU_Fulton_Logo.png" alt="left logo">
+    <!--  <a class="RISE_link" href="https://home.riselab.info/">Research</a>-->
 
-<div class="topnav">
-<!--  <img class="Llogo" src="static/img/logo.jpg" alt="right logo">-->
-  <div  class="link_container">
-    <a class="active" href="/">Home</a>
-    <a href="/participate">Participate</a>
-    <a href="/contact">Contact</a>
-    <a href="/about">About</a>
   </div>
-  <img class="Rlogo" src="static/img/ASU_Fulton_Logo.png" alt="left logo">
-<!--  <a class="RISE_link" href="https://home.riselab.info/">Research</a>-->
+
+
+  <script>
+    const navButtonIDs = ['home','participate','contact','about']
+
+    const pageID = window.location.pathname.slice(1,window.location.pathname.length)
+    document.getElementById(pageID).className  ='active';
+
+    $(document).ready(function() {
+      first_child = document.getElementById('main').children[0]
+      let c_bg = window.getComputedStyle(first_child).backgroundColor;
+      document.getElementById('navMaster').style.backgroundColor = c_bg
+
+      // document.getElementById('navMaster').backgroundColor = "red"
+
+    });
+
+    function navSelect(sel){
+      for (const nb of navButtonIDs) {  document.getElementById(nb).className  ='inactive';}
+      document.getElementById(sel).className  ='active';
+      console.log(sel)
+    }
+
+  </script>
 
 
 
