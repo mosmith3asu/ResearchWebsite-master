@@ -1,0 +1,483 @@
+{% extends "layouts/base.html" %}
+{% block title %} Pursuit Game {% endblock %}
+
+{#<!-- Specific Page CSS goes HERE  -->#}
+{% block stylesheets %}
+<style>
+    #main-frame {
+        display: flex; align-items: center; justify-content: center;
+        border: 1pt blue solid;
+    }
+    #fullViewPort {
+        /*display: flex; align-items: normal; justify-content: center;  flex-direction: column;*/
+        height: 700px;  width: 700px;
+        background-color: white;
+        border: 1pt red solid;
+    }
+    #contentViewPort {
+        display: block;
+        height: 95%;  width: 100%;
+        background-color: white;
+        border: 1pt red solid;
+    }
+    /*## INFO FRAME #######################*/
+    .infoFrame {
+        /*display: flex; align-items: center; justify-content: center;*/
+        display: inline-grid;
+        grid-auto-columns: 1fr 1fr;
+        grid-auto-rows: 50px 1fr 50px;
+        background-color: white; color: black;
+        padding: 0; margin: 0;
+        height: 100%; width: 100%;
+    } .infoFrame > .grid_item {
+          background-color: transparent;
+          padding: 0;margin: 0;
+          grid-column: 1 /span 2;
+          border: 1pt green dashed;
+      } .infoFrame > h1 {
+            text-align: center;
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            font-size: 20pt;
+        }
+    /*## SURVEY FRAME #######################*/
+    .surveyFrame {
+        /*display: flex; align-items: center; justify-content: center;*/
+        display: inline-grid;
+        grid-template-columns: repeat(12, 1fr);
+        /*grid-auto-rows: 50px 1fr 50px;*/
+        background-color: white; color: black;
+        padding: 0; margin: 0;
+        height: 100%; width: 100%;
+    }  .surveyFrame > .instructions {
+           background-color: transparent;
+           padding: 0;margin: 0;
+           grid-column: 1 /span 12;
+           border: 1pt green dashed;
+       } .surveyFrame > h1 {
+             grid-column: 1 /span 12;
+             text-align: center;
+             height: 100%;
+             width: 100%;
+             padding: 0;
+             margin: 0;
+             font-size: 20pt;
+         }
+
+    #navButtonContainer {
+        position: relative;
+        display: flex; align-items: center; justify-content: center;
+        width: 100%; height: 5%;
+        padding: 0; margin: 0;
+        align-self: end;
+    }
+
+    #backButton { width:100%; height: 100%;  border: 1pt green dashed;  }
+    #nextButton { width:100%; height: 100%;  }
+
+</style>
+
+{% endblock stylesheets %}#}
+
+
+
+{% block content %}
+<main id="main-frame">
+
+
+
+
+    <div id = "master-frame" style="color: black">
+        <div id = "fullViewPort" >
+
+            <div id="contentViewPort" style="height: 95%; border: 1pt red dashed;">
+                <div id="consentPage" class="infoFrame" >
+                    <h1 class="grid_item" style="grid-row: 1" > Consent</h1>
+                    <div class="grid_item"
+                         style="grid-row: 2; width: 90%; margin-left:5%; font-size: 11pt;">
+                        <p style="margin-bottom: 10pt; padding: 0">
+                            I am a graduate student under the direction of Professor Wenlong Zhang in the Ira Fulton Schools of Engineering
+                            at Arizona State University.  I am conducting a research study to investigate human interaction and
+                            decision-making under risky situations. Your participation will involve playing a series of seven games with a
+                            virtual partner taking an estimated total of 15 minutes for the whole experiment. The game will be played in a
+                            web interface and will require both a mouse and computer to play. </p>
+                        <p style="margin-bottom: 10pt; padding: 0">
+                            You have the right not to answer any question,
+                            and to stop participation at any time. Your participation in this study is voluntary.  If you choose not to
+                            participate or to withdraw from the study at any time, there will be no penalty. You must be 18 or older,
+                            able to operate a computer, and meet the required demographic group inquired before the experiment begins
+                            to participate in this study. Your participation will benefit research in human decision-making for the purpose
+                            of improving control models for robots that interact with humans in dynamic ways. Specifically, your responses
+                            to surveys will help investigate how human trust in virtual agents developed under different models of behavior.
+                            Also, the actions you take during the game will help validate and improve robotic understanding of humans. After
+                            the experiment is complete, further explanation about how the virtual partner modeled your actions is available
+                            if you wish to learn more about how you are contributing to this field. There are no foreseeable risks or
+                            discomforts to your participation.</p>
+                        <p style="margin-bottom: 10pt; padding: 0">
+                            Responses to all survey questions, participation date, and the actions you
+                            take during the game will be collected. To protect your privacy, all personal identifiers will be removed from
+                            your data and stored on a secure server. Your data will be confidential and the de-identified data collected as
+                            a part of this study will not be shared with others outside the research team approved by this study’s IRB
+                            or be used for future research purposes or other uses. The results of this study may be used in reports,
+                            presentations, or publications but your name will not be used. </p>
+                        <p style="margin-bottom: 10pt; padding: 0">
+                            If you have any questions concerning the research study, please contact the research team at: mosmith3@asu.edu
+                            or wenlong.zhang@asu.edu. If you have any questions about your rights as a subject/participant in this research, or if you feel you have been placed at risk,
+                            you can contact the Chair of the Human Subjects Institutional Review Board, through the ASU Office of Research
+                            Integrity and Assurance, at (480) 965-6788. Please let me know if you wish to be part of the study.</p>
+                    </div>
+
+                </div>
+
+                <div id="backgroundPage" class="infoFrame" >
+                    <h1 class="grid_item" style="grid-row: 1" > Background</h1>
+                    <div class="grid_item" style="grid-row: 2; width: 98%; margin-left:1%; font-size: 11pt;">
+                        <p style="margin-bottom: 10pt; padding: 0"> Please provide a small amount of information about yourself before we begin... </p>
+                        <form id="backgroundForm" style="width: 100%">
+                            <table id = 'backgroundTable' style="color: black; text-align: center;table-layout: fixed">  </table>
+                            <script>
+                                var questions = ['What is your age:','What is your occupation:','What is your sex:','How much experience do you have with video games:']
+                                var question_types = ['number','text','radio','radio']
+                                var question_names = ['age','occupation','sex','game_familiarity']
+                                var question_options = [[],[],["Male", "Female", "Other"],['None','Some','A lot']]
+                                var table = document.getElementById("backgroundTable");
+                                var headers = ['','']
+                                const question_width = 50
+                                const response_width = 90-question_width
+                                var row_offset = 0;
+                                var headerRow = table.insertRow();
+
+                                for (let iopt =0; iopt<headers.length; iopt++){
+                                    const headerCell = headerRow.insertCell();
+                                    headerCell.innerHTML = headers[iopt]
+                                    headerCell.style.textAlign = 'center'
+                                    // if (iopt===0){ headerCell.style.width = `${question_width}%`}
+                                    // else{headerCell.style.width = `${response_width}%`}
+                                    if (iopt===0){ headerCell.style.width = "50%"}
+                                    else{headerCell.style.width ="50%"}
+                                }
+                                row_offset =  row_offset +1;
+
+                                // Create response items
+                                for (let iq = 0; iq<questions.length; iq++) {
+                                    var question1 = table.insertRow();  // create question rows
+                                    var question1Cell = question1.insertCell();  // create question cells
+                                    question1Cell.innerHTML = questions[iq]
+                                    question1Cell.style.textAlign = 'right'
+                                    var fieldCell = table.rows[iq + row_offset].insertCell();
+
+                                    if (question_types[iq] === 'radio') {
+                                        var options = question_options[iq]
+                                        for (let iopt = 0; iopt < options.length; iopt++) {
+                                            var option = document.createElement("input");
+                                            option.type = 'radio';
+                                            option.name = question_names[iq];
+                                            option.name = question_names[iq];
+                                            option.value = options[iopt];
+
+                                            var optionLabel = document.createElement("label");
+                                            optionLabel.innerHTML = options[iopt];
+                                            fieldCell.appendChild(option);
+                                            fieldCell.appendChild(optionLabel);
+                                            option.style.width = '5%'
+                                            optionLabel.style.width = '20%'
+                                            optionLabel.style.textAlign = 'left'
+                                        }
+                                    } else {
+                                        var field = document.createElement("input");
+                                        field.type = question_types[iq];
+                                        field.name = question_names[iq];
+                                        field.id = question_names[iq];
+                                        field.style.width = "80%"
+                                        fieldCell.appendChild(field)
+                                    }
+                                    question1Cell.style.width = "20%"
+                                    fieldCell.style.width = "1%"
+                                }
+                                // create radio button cells
+
+
+
+                            </script>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div id="surveyPage" class="infoFrame" >
+                    <h1 class="grid_item" style="grid-row: 1" > Survey</h1>
+                    <div class="grid_item" style="grid-row: 2; width: 100%; margin-left:0; font-size: 11pt;">
+                        <!--                        <p style="margin-bottom: 10pt; padding: 0"> Please provide a small amount of information about yourself before we begin... </p>-->
+                        <form id="survey-form"> <table id = surveyTable style="color: black; width: 98%;margin-left: 1%"></table> </form>
+                        <script>
+                            function createSurvev() {
+                                var table = document.getElementById("surveyTable");
+                                const options = ['', '0%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%']
+                                const questions1 = ['Dependable', 'Reliable', 'Unresponsive', 'Predictable']
+                                const instructions1 = `What % of the time will this partner be...`
+                                const questions2 = ['Act Consistantly', 'Meet the needs of the task', 'Perform as expected']
+                                const instructions2 = `What % of the time will this partner...`
+                                var question_set = [questions1, questions2]
+                                var instruction_set = [instructions1, instructions2]
+
+                                var question_width = 35 //percent width
+                                var option_width = (95 - question_width) / (options.length - 1)
+                                var row_offset = 0;
+                                var question_offset = 1;
+                                // `Please complete the following survey based on your feelings when interacting with your virtual partner. When you are finished responding, please press the "Submit" button to continue.`
+
+                                // var questions = questions1;
+                                // var instructions = instructions1;
+                                for (let iset = 0; iset < question_set.length; iset++) {
+                                    var questions = question_set[iset];
+                                    var instructions = instruction_set[iset];
+
+                                    // Create instructions
+                                    var instructionsRow = table.insertRow();
+                                    var emptyCell = instructionsRow.insertCell()
+                                    // emptyCell.style.width = `${question_width}%`
+
+
+                                    var instructionsCell = instructionsRow.insertCell()
+                                    instructionsCell.colSpan = options.length - 1
+                                    instructionsCell.innerHTML = instructions
+                                    instructionsCell.style.textAlign = 'left'
+                                    instructionsCell.style.fontWeight = 'bold'
+                                    instructionsCell.style.backgroundColor = '#c9d0d6'
+                                    emptyCell.style.backgroundColor = '#c9d0d6'
+                                    emptyCell.style.width = `${question_width}%`
+                                    instructionsCell.style.width = `${100 - question_width}%`
+                                    row_offset = row_offset + 1;
+
+                                    // create table header
+                                    var headerRow = table.insertRow();
+                                    for (let iopt = 0; iopt < options.length; iopt++) {
+                                        const headerCell = headerRow.insertCell();
+                                        headerCell.innerHTML = options[iopt]
+
+
+                                        // if (iopt===0){ headerCell.style.width = `${question_width}%`}
+                                        // else{headerCell.style.width = `${option_width}%`}
+                                    }
+                                    row_offset = row_offset + 1;
+
+                                    // Create response items
+                                    for (let iq = 0; iq < questions.length; iq++) {
+                                        var question1 = table.insertRow();  // create question rows
+                                        var question1Cell = question1.insertCell();  // create question cells
+                                        question1Cell.innerHTML = questions[iq]
+                                        question1Cell.style.textAlign = 'right'
+
+                                        // create radio button cells
+                                        for (let iopt = 1; iopt < options.length; iopt++) {
+                                            var radioCell = table.rows[iq + row_offset].insertCell();
+                                            // radioCell.textAlign = 'center'
+                                            var radio = document.createElement("input");
+                                            radio.type = "radio";
+                                            radio.name = "q" + (iq + question_offset);
+                                            radio.value = (iopt + 1);
+                                            radioCell.appendChild(radio);
+                                            // question_offset = question_offset+1;
+                                        }
+                                    }
+                                    row_offset = row_offset + questions.length;
+                                    question_offset = question_offset + questions.length;
+
+                                }
+
+                            }
+                            createSurvev()
+                        </script>
+
+
+
+                        <p id = 'survey-incomplete'> Please answer every question of the survey</p>
+                    </div>
+                </div>
+
+
+
+                <!--                <div id="surveyPage" class="surveyFrame" >-->
+                <!--                    <h1 style="grid-row: 1" > Survey</h1>-->
+                <!--                    <div class = 'instructions' style="grid-row: 2">-->
+                <!--                         <p > Please complete the following questions to the best of your ability... </p>-->
+                <!--                    </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
+
+            </div>
+
+
+            <div id="navButtonContainer">
+                <button id="backButton">Back</button>
+                <button id="nextButton">Next</button>
+                <script> // Connect Navigation Buttons
+                document.getElementById("backButton").addEventListener("click", function() { user_input.store('button','back') });
+                document.getElementById("nextButton").addEventListener("click", function() { user_input.store('button','continue')});
+                </script>
+            </div>
+
+
+
+            <script>
+                let content_frames = document.getElementById("contentViewPort").children;
+                let navButtonContainer = document.getElementById("navButtonContainer");
+                let backButton = document.getElementById("backButton");
+                let nextButton = document.getElementById("nextButton");
+                const update_rate = 100; // in miliseconds
+                var current_view = 'consentPage';
+
+            </script>
+
+
+            <script src="{{ url_for('static', filename='PursuitGame/scripts/client_socket.js') }}"></script>
+
+
+
+
+
+
+            <!--        <div id="canvas-frame">  <canvas id="canvas" width="700" height="700"></canvas>  </div>-->
+
+            <!--        <div id="background-frame">-->
+            <!--          <h1 id = 'background-title'>Background</h1>-->
+            <!--          <p id = 'background-instructions'> Please provide a small amount of information about yourself before we begin...</p>-->
+            <!--          <form id="background-form">-->
+            <!--            <table id = background-table style="color: black"></table>-->
+            <!--          </form>-->
+            <!--          <p id = 'background-incomplete'> Please answer every question of the survey</p>-->
+            <!--          <button id="submit-background-button">Submit</button>-->
+            <!--        </div>-->
+
+            <!--        <div id="survey-frame">-->
+            <!--          <h1 id = 'survey-title'>Survey</h1>-->
+            <!--          <p id = 'survey-instructions'>  Please complete the following survey based on your feelings when interacting with automated agents.-->
+            <!--            <br><br>For example, how do you feel when interacting with automated systems like robots, self-driving cars, or automated voice assistants.-->
+            <!--            <br><br> When you are finished responding, please press the "Submit" button to continue..</p>-->
+
+            <!--          <form id="survey-form">-->
+            <!--            <table id = survey-table></table>-->
+            <!--          </form>-->
+            <!--          <p id = 'survey-incomplete'> Please answer every question of the survey</p>-->
+            <!--          <button id="submit-survey-button">Submit</button>-->
+            <!--        </div>-->
+
+
+
+
+            <!--        <div id="info-frame">-->
+            <!--          <h1 id = 'info-page-title'>Title</h1>-->
+            <!--          <div id = 'info-img'>-->
+            <!--            <img id="info-page-img"-->
+            <!--                 src="https://s3-alpha.figma.com/hub/file/948140848/1f4d8ea7-e9d9-48b7-b70c-819482fb10fb-cover.png" alt="img">-->
+            <!--          </div>-->
+
+
+            <!--          <div id="info-page-text">-->
+            <!--            <p> This is some smaple text</p>-->
+            <!--          </div>-->
+
+            <!--          <div id="nav-buttons-frame">-->
+            <!--            <button id="back-button">Back</button>-->
+            <!--            <button id="continue-button">Continue</button>-->
+            <!--          </div>-->
+
+            <!--        </div>-->
+            <!--      </div>-->
+
+            <!--  ############ INCLUDE SCRIPTS #############-->
+            <!--            <script src="{{ url_for('static', filename='PursuitGame/scripts/client_socket.js') }}"></script>-->
+            <!--            <script src="{{ url_for('static', filename='PursuitGame/scripts/game_obj.js') }}"></script>-->
+            <!--            <script src="{{ url_for('static', filename='PursuitGame/scripts/page_content.js') }}"></script>-->
+
+            <script>
+                // const FRAMES = ['canvas-frame','info-frame','survey-frame','nav-buttons-frame','submit-survey-button','background-frame']
+                // const BUTTONS = {'info-frame': 'nav-buttons-frame', 'survey-frame': 'submit-survey-button'}
+                //
+                // const HAS_NAV_BUTTONS = ['info-frame']
+                // var current_view = '';
+                // const update_rate = 100; // in miliseconds
+                // const host = 'http://192.168.0.137:8080'
+                // const render_route = "/"
+                // const game_end_redirect = false
+                //
+                // const mainFrame = document.getElementById("main-frame");
+                // // mainFrame.style.backgroundColor = 'grey'
+                //
+                //
+                // const masterFrame = document.getElementById("master-frame");
+                // masterFrame.style.position = 'absolute'
+                // masterFrame.style.height = '80%' //800px
+                // masterFrame.style.width = "80%"//"700px";
+                // masterFrame.style.left = '10%'
+                // masterFrame.style.border = '1px solid red'
+                // masterFrame.style.backgroundColor = 'white'
+                // masterFrame.style.alignSelf = 'center'
+
+                // // INFO FRAME ==========================================
+                // let backgroundpage = new BackgroundPage_Handler()
+                // let infopage = new InfoPage_Handler();
+                // let surveypage = new SurveyPage_Handler();
+
+                // let user_input = new UserInput()
+                // let G = new Game([1,0,3,3,1,0]);
+
+                // G.render()
+                // hide_all()
+                // show('info-frame')`
+
+                // Disable scroll
+                // document.addEventListener("keydown", function(event) {
+                //     if (event.code === "Space" || event.code === "ArrowUp" || event.code === "ArrowDown") { event.preventDefault(); }
+                // });
+
+                // $(document).keydown(function(e) {
+                //     console.log(`PRESS: ${decode_keypress(e)}`);
+                //     user_input.store('keypress',decode_keypress(e))
+                // })
+
+                // $(document).ready(function() {
+                //     const socket = io();
+                //     function client_update() {
+                //         const user_input_buffer =  user_input.read_buffer()
+                //         socket.emit('update_gamestate', user_input_buffer)
+                //     }
+                //
+                //     // Emit actions on .js event ######################################################
+                //     setInterval(client_update, update_rate) // 1 millisecond is almost close to continu
+                //
+                //
+                //     // Update game data on response from server ##########################################
+                //     socket.on( 'update_gamestate', (data)=>{
+                //         // console.log(data)
+                //         // NEW VIEW => Hide all views for init
+                //         if (data['view'] !== current_view){
+                //             hide_all(); show(data['view'])
+                //             current_view = data['view']
+                //             console.log('Changing view to '+ current_view)
+                //         }
+
+                // if (data['view'] === 'info-frame'){
+                //   infopage.update(data)
+                //
+                //     console.log('udating info-frame')
+                // } else if (data['view'] === 'background-frame'){
+                //   backgroundpage.update(data)
+                // } else if (data['view'] === 'canvas-frame'){
+                //   G.update(data)
+                //   G.render()
+                // }
+
+                //     })
+                // })
+
+            </script>
+
+
+</main>
+
+{% endblock %}
+

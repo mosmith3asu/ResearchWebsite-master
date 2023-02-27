@@ -34,7 +34,7 @@
     <section class="dark_section">
         <h1>Participate in an Experiment</h1>
         <div style="width = 10%; padding-left: 40%;padding-right: 40%;padding-bottom: 16pt">
-            <button class="interactive_button" onclick="window.location.href='/render_PursuitGame.html'">Quick Join an Experiment</button>
+            <button class="interactive_button" onclick="window.location.href='/render_PursuitGame'">Quick Join an Experiment</button>
 
         </div>
         <!--        <h2>Select from the following experiments to participate in  </h2>-->
@@ -80,7 +80,7 @@
             </div>
 
             <div class = "grid_item" style="grid-row: 5;grid-column: 2;">
-                <button class="interactive_button" onclick="window.location.href='/render_PursuitGame.html'">Join</button>
+                <button class="interactive_button" onclick="window.location.href='/render_PursuitGame'">Join</button>
             </div>
         </div>
     </section>
@@ -136,52 +136,23 @@
                 </ul>
             </div>
 
-            <div class = "grid_item" style="grid-row: 5;grid-column: 1;">
-                <button class="interactive_button">Join</button>
-            </div>
+            <div class = "grid_item" style="grid-row: 5;grid-column: 1;">  <button class="interactive_button">Join</button> </div>
         </div>
 
     </section>
 
 
         <script>
+            // Coming Soon Overlay
             $(document).ready( draw_overlay() )
-
             addEventListener("resize", (event) => {draw_overlay()});
-
-            // onresize = (event) => {};
-
             function draw_overlay()  {
                  let parent_ele = document.getElementById('comingsoon_sec');
                  let child_ele =  document.getElementById('comingsoon');
                  let parent_bbox = parent_ele.getBoundingClientRect()
                  child_ele.style.height = parent_bbox.height;
                  child_ele.style.width = parent_bbox.width;
-                // let child_ele =  document.getElementById('comingsoon')
-                // let parent_ele = document.getElementById('comingsoon_sec');
-                // // parent_ele.style.position = 'absolute'
-                // let parent_bbox = parent_ele.getBoundingClientRect()
-                // let child_bbox = child_ele.getBoundingClientRect();
-                //
-                // document.getElementById('comingsoon').style.top = `${parent_bbox.top}`;
-                // document.getElementById('comingsoon').style.width = `${parent_bbox.width}`;
-                // document.getElementById('comingsoon').style.height = `${parent_bbox.height }`;
-                // // document.getElementById('comingsoon').style.left = `${parent_bbox.left}`;
-                // // document.getElementById('comingsoon').style.bottom = `${parent_bbox.bottom}`;
-                // // document.getElementById('comingsoon').style.right = `${parent_bbox.right}`;
-                // // document.getElementById('comingsoon').style.y = `${parent_bbox.y} `;
-                //
-                // let new_parent_bbox = parent_ele.getBoundingClientRect()
-                // let new_child_bbox = child_ele.getBoundingClientRect();
-                // console.log(' ')
-                // console.log(new_parent_bbox)
-                // console.log(new_child_bbox)
-                // // console.log(parseInt(parent_bbox.y)-parseInt(child_bbox.height))
-                // console.log(window.scrollY)
-
             }
-
-
         </script>
 
 

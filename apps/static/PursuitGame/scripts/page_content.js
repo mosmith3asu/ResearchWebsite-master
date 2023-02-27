@@ -44,6 +44,7 @@ class BackgroundPage_Handler{
         backgroundFrame.style.position = 'absolute'
         backgroundFrame.style.height = masterFrame.clientHeight + 'px';
         backgroundFrame.style.width = masterFrame.clientWidth + 'px';
+        backgroundFrame.style.color = 'black'
 
         const backgroundTitle = document.getElementById("background-title");
         backgroundTitle.style.height = "10%";
@@ -58,6 +59,8 @@ class BackgroundPage_Handler{
         backgroundForm.style.width = "100%"
         backgroundForm.style.top = "10%"
         backgroundForm.style.position = 'absolute'
+                backgroundForm.style.color = 'black'
+
         if (HiglightBoarder){ backgroundForm.style.border = '1px solid blue'}
 
 
@@ -98,8 +101,9 @@ class BackgroundPage_Handler{
         backgroundTable.style.top = backgroundInstructions.clientHeight + backgroundTitle.clientHeight + 'px';
         // backgroundTable.style.top = "50%";
         backgroundTable.style.position = 'absolute'
-        if (HiglightBoarder){  backgroundTable.style.border = '1px solid blue'
-        }
+        if (HiglightBoarder){  backgroundTable.style.border = '1px solid blue'  }
+                        // backgroundTable.style.color = 'black'
+
 
 
         const backgroundIncomplete =  document.getElementById("background-incomplete");
@@ -292,6 +296,7 @@ class SurveyPage_Handler{
         surveyFrame.style.position = 'absolute'
         surveyFrame.style.height = masterFrame.clientHeight + 'px';
         surveyFrame.style.width = masterFrame.clientWidth + 'px';
+        surveyFrame.style.color = 'black';
 
         const surveyTitle = document.getElementById("survey-title");
         surveyTitle.style.height = "10%";
@@ -306,10 +311,13 @@ class SurveyPage_Handler{
         surveyForm.style.top = "10%"
         surveyForm.style.position = 'absolute'
         // surveyForm.style.border = '1px solid blue'
+
+
         const surveyInstructions = document.getElementById("survey-instructions");
         surveyInstructions.style.width = "95%"
         surveyInstructions.style.alignSelf = "center"
         surveyInstructions.style.margin = "auto"
+
 
         const surveyTable = document.getElementById("survey-table");
         surveyTable.style.textAlign = "center";
@@ -320,7 +328,6 @@ class SurveyPage_Handler{
         // surveyTable.style.top = "50%" ;
         surveyTable.style.tableLayout = "fixed" ;
         surveyTable.style.position = "absolute" ;
-
         surveyTable.style.top = 1.5*surveyInstructions.clientHeight + 'px';
 
         const surveyIncomplete =  document.getElementById("survey-incomplete");
@@ -465,11 +472,14 @@ class InfoPage_Handler{
         infoPage.style.height ="100%" //0.9*masterFrame.clientHeight + 'px';
         infoPage.style.width = "100%"//masterFrame.clientWidth + 'px';
         infoPage.style.border = '1px solid blue'
+        infoPage.style.color = 'black'
 
         const infoPageTitle = document.getElementById("info-page-title");
         infoPageTitle.style.height = "10%";
         infoPageTitle.style.width = "100%";
         infoPageTitle.style.textAlign = 'center'
+        infoPageTitle.style.color = 'black'
+
 
         const infoImg = document.getElementById("info-img");
         infoImg.style.display = "flex";

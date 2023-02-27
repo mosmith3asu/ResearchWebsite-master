@@ -38,7 +38,6 @@ def add_routes(app):
             # treatment = GameHandler.sample_treatment()
             # session['GAME'] = GameHandler(iworld=0,treatment=treatment)
             session['GAME'] = GameHandler.new()
-
         return render_template('pages/render_PursuitGame.html')
 
         # if not session.get('GAME'):

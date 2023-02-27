@@ -8,10 +8,11 @@ def add_events(socketio):
     @socketio.on('connect')
     def event_connect():
         session['sid'] = request.sid
-        print('Client Connected...')
+        print(f'Client Connected [sid: {request.sid}]...')
 
     @socketio.on('update_gamestate')
     def event_update_gamestate(message):
+
         send_data = {}
         GAME = session.get("GAME")
         iview = session.get("iview")
@@ -20,6 +21,15 @@ def add_events(socketio):
             # print(message['keypress'])
         if 'button' in message.keys():
             if message['button'] == 'continue':
+
+                # ADDED #################################
+                if 'canvas' in test_views[iview-1]['view']:
+                    print('Next game')
+                    GAME.is_finished = True
+                    GAME.playing = False
+                #########################################
+
+
                 iview += 1
             elif message['button'] == 'back':
                 iview -= 1
@@ -47,8 +57,11 @@ def add_events(socketio):
         for key in test_views[iview].keys():
             send_data[key] = test_views[iview][key]
 
+
         session['iview'] = iview
+        print(f'Send {iview}')
         # RESPOND TO THE CLIENT --------------------
+        # print(f'Host Rec: {message} Host Send: {send_data}')
         socketio.emit('update_gamestate', send_data, room=session['sid'])  #
 
     # socketio.on_event(message='connect', handler=event_connect)

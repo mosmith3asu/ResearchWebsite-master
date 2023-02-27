@@ -13,6 +13,11 @@ let COLORS = new ColorPallet()
 //###################################################
 //###################################################
 //###################################################
+function center_align_element(element){
+    element.style.display = "block";
+    element.style.margin = 'auto';
+    element.style.height = '100%';
+}
 
 
 class Player  {
@@ -97,8 +102,10 @@ class Game  {
 
         const canvasFrame = document.getElementById("canvas-frame");
         center_align_element(canvasFrame)
-        canvasFrame.style.width = '100%'
-        canvasFrame.style.height = '100%'
+        // canvasFrame.style.width = '100%'
+        // canvasFrame.style.height = '100%'
+        canvasFrame.style.width = '700px'
+        canvasFrame.style.height = '700px'
         canvasFrame.style.backgroundColor = 'black'
         canvasFrame.style.position = 'absolute'
         canvasFrame.style.border = '1px solid blue'
@@ -181,7 +188,9 @@ class Game  {
         this.penalty_states = pen_states;
         this.current_action = data['current_action'];
     }
-    clear(){ this.ctx.clearRect(0,0,this.can_w,this.can_h);}
+    clear(){
+        this.load_empty_world()
+        this.ctx.clearRect(0,0,this.can_w,this.can_h);}
     draw_world() {
         var c_black = 'rgba(0,0,0, 1.0)'
         var c_red = 'rgba(255,0,0, 0.3)'
@@ -255,8 +264,9 @@ class Game  {
     }
     draw_penalty_counter(){
         var font_h = 30
-        var yloc = (this.tile_h * (this.nRow-1) )+ 0.7*this.tile_h + font_h/2//(this.nRow/2 -0.4)
-        var xloc = this.tile_w * (1)
+        // var yloc = (this.tile_h * (this.nRow-1) )+ 0.7*this.tile_h + font_h/2//(this.nRow/2 -0.4)
+        var yloc = (this.tile_h * (this.nRow-1) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
+        var xloc = this.tile_w * (5)
         var xoff_cnter =  0.75*this.tile_w
 
         var hpad = 0.05*this.tile_h
@@ -416,8 +426,11 @@ class Game  {
             this.ctx.fillRect(x_player-timer_width/2, tHeight, timer_width, y_end-tHeight)
 
             // Disabled Evader Timer -----------------
-            this.ctx.fillStyle = c_evader_dim //empty
-            this.ctx.fillRect(x_evader-timer_width/2, y_start, timer_width,timer_height)
+            // this.ctx.fillStyle = c_evader_dim //empty
+            // this.ctx.fillRect(x_evader-timer_width/2, y_start, timer_width,timer_height)
+            this.ctx.fillStyle = this.c_human //empty
+            this.ctx.fillRect(x_evader-timer_width/2, tHeight, timer_width, y_end-tHeight)
+
         }
     }
 
