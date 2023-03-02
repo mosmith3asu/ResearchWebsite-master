@@ -77,7 +77,7 @@ $(document).ready(function() {
     setInterval(function (){
         const user_input_buffer =  user_input.read_buffer()
         socket.emit('update_gamestate', user_input_buffer)
-        console.log(`Client Send: ${user_input_buffer}`)
+        // console.log(`Client Send: ${user_input_buffer}`)
 
     }, update_rate) // 1 millisecond is almost close to continue
 

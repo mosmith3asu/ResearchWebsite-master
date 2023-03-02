@@ -10,36 +10,36 @@
     <img class="Rlogo" src="static/img/ASU_Fulton_Logo.png" alt="left logo">
   </div>
 
-<!--  <script>-->
-<!--    const navButtonIDs = ['home','participate','contact','about']-->
-<!--    const checkID =  {-->
-<!--      '': 'home',-->
-<!--      'home': 'home',-->
-<!--      'index': 'home',-->
-<!--      'participate': 'participate',-->
-<!--      'render_PursuitGame': 'participate',-->
-<!--      'render_iRobot': 'participate',-->
-<!--      'contact':'contact',-->
-<!--      'about':'about'-->
-<!--    }-->
-<!--    var pageID = window.location.pathname.slice(1,window.location.pathname.length)-->
-<!--    console.log(`NAVIGATING to ${pageID} (aka ${checkID[pageID]})...`)-->
-<!--    pageID = checkID[pageID]-->
-<!--    document.getElementById(pageID).className  ='active';-->
-<!--    $(document).ready(function() {-->
-<!--      first_child = document.getElementById('main').children[0]-->
-<!--      let c_bg = window.getComputedStyle(first_child).backgroundColor;-->
-<!--      document.getElementById('navMaster').style.backgroundColor = c_bg-->
+  <script>
+    const navButtonIDs = ['home','participate','contact','about']
+    const checkID =  {
+      '': 'home',
+      'home': 'home',
+      'index': 'home',
+      'participate': 'participate',
+      'render_PursuitGame': 'participate',
+      'render_iRobot': 'participate',
+      'contact':'contact',
+      'about':'about'
+    }
+    var pageID = window.location.pathname.slice(1,window.location.pathname.length)
+    console.log(`NAVIGATING to ${pageID} (aka ${checkID[pageID]})...`)
+    pageID = checkID[pageID]
+    document.getElementById(pageID).className  ='active';
+    $(document).ready(function() {
+      first_child = document.getElementById('main').children[0]
+      let c_bg = window.getComputedStyle(first_child).backgroundColor;
+      document.getElementById('navMaster').style.backgroundColor = c_bg
 
-<!--      // document.getElementById('navMaster').backgroundColor = "red"-->
+      // document.getElementById('navMaster').backgroundColor = "red"
 
-<!--    });-->
-<!--    function navSelect(sel){-->
-<!--      for (const nb of navButtonIDs) {  document.getElementById(nb).className  ='inactive';}-->
-<!--      document.getElementById(sel).className  ='active';-->
-<!--      console.log(sel)-->
-<!--    }-->
-<!--  </script>-->
+    });
+    function navSelect(sel){
+      for (const nb of navButtonIDs) {  document.getElementById(nb).className  ='inactive';}
+      document.getElementById(sel).className  ='active';
+      console.log(sel)
+    }
+  </script>
 
 
 

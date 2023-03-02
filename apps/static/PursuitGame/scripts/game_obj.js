@@ -266,6 +266,8 @@ class Game  {
         var font_h = 30
         // var yloc = (this.tile_h * (this.nRow-1) )+ 0.7*this.tile_h + font_h/2//(this.nRow/2 -0.4)
         var yloc = (this.tile_h * (this.nRow-1) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
+        // var yloc = (this.tile_h * (0.25) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
+
         var xloc = this.tile_w * (5)
         var xoff_cnter =  0.75*this.tile_w
 
@@ -295,13 +297,25 @@ class Game  {
     }
     draw_current_action(){
         var headlen = this.tile_h*0.25; // length of head in pixels
-        var arrow_color = COLORS.white
-        var fromy = (this.nRow-0.5)*this.tile_h
-        var fromx = (this.nCol/2)*this.tile_w
-        var arrow_len = 0.3*this.tile_h
-        let DIRECTION = [[0,arrow_len],[-arrow_len,0],[0,-arrow_len],[arrow_len,0],[0,0]]
-        var dy = DIRECTION[this.current_action][1]
-        var dx = DIRECTION[this.current_action][0]
+        var arrow_color = COLORS.white;
+        var fromy = (this.nRow-0.5)*this.tile_h;
+        var fromx = (this.nCol/2)*this.tile_w;
+        // var fromy = (this.nRow/2-0.5)*this.tile_h;
+        // var fromx = (this.nCol/2)*this.tile_w;
+        var arrow_len = 0.3*this.tile_h;
+        // let DIRECTION = [[0,arrow_len],[-arrow_len,0],[0,-arrow_len],[arrow_len,0],[0,0]];
+
+        let DIRECTION = {
+            'down':[0,arrow_len], 1:[0,arrow_len],
+            'left':[-arrow_len,0], 2:[-arrow_len,0],
+            'up':[0,-arrow_len],3:[0,-arrow_len],
+            'right':[arrow_len,0],4:[arrow_len,0],
+            'wait':[0,0],5:[0,0]};
+
+        // console.log(this.current_action)
+        // console.log(DIRECTION[this.current_action])
+        var dy = DIRECTION[this.current_action][1];
+        var dx = DIRECTION[this.current_action][0];
 
         if (dx === 0 && dy ===0){
             var font_h = 30
@@ -358,6 +372,8 @@ class Game  {
     draw_move_counter(){
         var font_h = 30
         var yloc = (this.tile_h * (this.nRow-1) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
+        // var yloc = (this.tile_h * (0) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
+
         var xloc = this.tile_w * (1)
         var xoff_cnter =  0.75*this.tile_w
 
@@ -433,7 +449,6 @@ class Game  {
 
         }
     }
-
     load_empty_world(){
         for(let r=0; r<7;r++){
             for(let c=0; c<7;c++){
