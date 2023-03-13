@@ -1,0 +1,30 @@
+{% extends "layouts/base.html" %}
+{% block title %} Blank Page {% endblock %}
+
+{#<!-- Specific Page CSS goes HERE  -->#}
+{% block stylesheets %}{% endblock stylesheets %}#}
+{% block content %}
+<main>
+    <section class="floating_section">
+        <h1>Research Members</h1>
+        <div class="panel_container">
+            <div class="panel">
+                <div class="panel_header">Mason Smith</div>
+                <img class="panel_image" src="static/img/profilepic_mason.jpg" alt="profile picture">
+                <div class="panel_descr">
+                    <p>
+                        Mason is a student-researcher at Arizona State University interested in facilitating intelligent
+                        robotics such that they can intuitively interact with humans and assist us in everyday life.
+                        To accomplish this, Mason has chosen to focus on advancing cognition-aware robotic systems may
+                        better understand why and how humans make the decisions they do. Doing this, Mason hopes to improve
+                        the relationship between and efficiency when human and robots collaborate. Mason is currently pursuing a PhD in Systems Engineering but has obtained degrees in
+                        BSE Engineering (Robotics), BS Human Systems Engineering, and a MS Engineering
+                    </p>
+                    <p>C: mosmith3@asu.edu</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}
