@@ -71,14 +71,13 @@
     color: var(--c_secondary_fg);
     box-shadow: -5px 3px 10px var(--dc_lighten); /*  [xoffset yoffset blur]*/
     border-radius: 25px;
+    width: 96%;
+    /*padding-left: 2%;*/
+    /*padding-right: 2%;*/
+        margin-left: 2%;
+    margin-right: 2%;
+    align-content: center;
 
-    width: 100%;
-    /*padding-top: 5%;*/
-    padding-left: 10%;
-    padding-right: 10%;
-    margin-top: 10pt;
-    margin-left: 0%;
-    margin-right: 0%;
 }
 .floating_section > h1{
     color: var(--c_secondary);

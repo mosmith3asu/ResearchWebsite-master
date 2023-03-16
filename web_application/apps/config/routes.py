@@ -68,8 +68,7 @@ def add_routes(app):
     routes['/'] = index
     routes['/index'] = index
     routes['/home'] = index
-
-    routes['/contact'] = contact
+    # routes['/contact'] = contact
     routes['/participate'] = participate
     routes['/render_iRobot'] = render_iRobot
     routes['/render_PursuitGame'] = render_PursuitGame

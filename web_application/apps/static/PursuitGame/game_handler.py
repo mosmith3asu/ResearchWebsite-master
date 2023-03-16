@@ -20,7 +20,8 @@ class GameHandler(object):
     @classmethod
     def new(cls):
         INIT_WORLD = 0
-        treatment = GameHandler.sample_treatment()
+        # treatment = GameHandler.sample_treatment()
+        treatment = 'Baseline'
         return GameHandler(iworld=INIT_WORLD,treatment=treatment)
 
     def __init__(self,iworld,treatment,debug = False):
@@ -466,9 +467,9 @@ class GameHandler(object):
             str_label = f'[Robot: {self.a2name[ichoice]}={move_R}]\t'
             str_pdA = '['+'\t'.join([f'{self.a2name[i]} = {pdAegok[iR][i].round(3)}' for i in range(5)]) + ']\t'
             str_QA = '['+'\t'.join([f'{self.a2name[i]} = {qAegok[iR][i].round(3)}' for i in range(5)]) + ']\t'
-            str_Qjoint = f'{qAjointk[iR].round(3)}'
+            # str_Qjoint = f'{qAjointk[iR].round(3)}'
 
-            print( str_label + str_pdA + str_QA + str_Qjoint)
+            print( str_label + str_pdA + str_QA)
 
         return move_R
 

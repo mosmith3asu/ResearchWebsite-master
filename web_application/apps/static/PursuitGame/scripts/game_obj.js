@@ -135,12 +135,13 @@ class Game  {
             this.clear()
             this.draw_world()
             this.draw_players()
+            this.draw_iworld_header()
+
 
             this.draw_penalty_counter()
             this.draw_timers()
 
             this.draw_move_counter()
-            this.draw_iworld_header()
             this.draw_current_action()
             this.draw_penalty_overlay()
             this.draw_finished_overlay()
@@ -242,12 +243,16 @@ class Game  {
     }
     draw_penalty_counter(){
         var font_h = 30
-        // var yloc = (this.tile_h * (this.nRow-1) )+ 0.7*this.tile_h + font_h/2//(this.nRow/2 -0.4)
-        var yloc = (this.tile_h * (this.nRow-1) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
-        // var yloc = (this.tile_h * (0.25) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
+        // var yloc = (this.tile_h * (this.nRow-1) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
 
-        var xloc = this.tile_w * (5)
+        var yloc = this.tile_h * (7)  - this.tile_h/3
+        // var yloc = this.tile_h * (1)  - this.tile_h/3
+
+
+        var xloc = this.tile_w * (5.5)
+        // var xoff_cnter =  0.75*this.tile_w
         var xoff_cnter =  0.75*this.tile_w
+
 
         var hpad = 0.05*this.tile_h
         var h_patch = 1.0*font_h//0.5*this.tile_h
@@ -343,16 +348,23 @@ class Game  {
         this.ctx.font = (`${font_h}px serif`)// '30px serif';
         this.ctx.textAlign = 'center';
         this.ctx.fillStyle = c_label;
-        this.ctx.fillText(`GAME ${this.world}/7`,  xloc, yloc);
+        let disp_txt = `GAME ${this.world}/7`;
+        if(this.world===0){disp_txt = 'Practice'}
+
+        this.ctx.fillText(disp_txt,  xloc, yloc);
+
+
+        // this.ctx.fillText( `GAME ${this.world}/7`,  xloc, yloc);
 
 
     }
     draw_move_counter(){
         var font_h = 30
-        var yloc = (this.tile_h * (this.nRow-1) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
-        // var yloc = (this.tile_h * (0) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
+        // var yloc = (this.tile_h * (this.nRow-1) )+ this.tile_h/4 + font_h/2//(this.nRow/2 -0.4)
+        var yloc = this.tile_h * (7)  - this.tile_h/3
 
-        var xloc = this.tile_w * (1)
+        // var yloc = this.tile_h * (1)  - this.tile_h/3
+        var xloc = this.tile_w * (0.9)
         var xoff_cnter =  0.75*this.tile_w
 
         var hpad = 0.05*this.tile_h
