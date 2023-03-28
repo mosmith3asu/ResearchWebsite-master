@@ -4,6 +4,19 @@
   /*--c_primary30: rgba(18, 16, 16, 1);*/
   /*--c_primary10: rgba(208, 206, 206, 1);*/
 
+  --c_bg: rgb(25, 25, 25);
+  --c_bg_light: rgba(38, 36, 36, 1);
+  --c_bg_dark: rgb(0, 0, 0);
+  --c_primary: rgb(253, 196, 39);
+  --c_secondary: rgb(238, 100, 23);
+  --c_accent: rgba(121, 0, 11, 1);
+
+
+
+
+
+
+
   --c_primary10: rgba(38, 36, 36, 1);
   --c_primary30: rgba(18, 16, 16, 1);
   --c_primary60: rgba(248, 246, 236, 1);

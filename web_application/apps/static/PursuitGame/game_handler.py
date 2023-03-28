@@ -25,6 +25,7 @@ class GameHandler(object):
         return GameHandler(iworld=INIT_WORLD,treatment=treatment)
 
     def __init__(self,iworld,treatment,debug = False):
+        treatment ='Baseline'
         self.debug = debug
         self.iworld = iworld
         self.treatment = treatment

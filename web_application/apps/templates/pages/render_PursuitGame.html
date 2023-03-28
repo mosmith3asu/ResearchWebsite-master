@@ -10,7 +10,8 @@
     }
 
     #main-frame {
-        display: flex; align-items: center; justify-content: center;
+        display: flex; align-items: center; justify-content: center;background: black;
+        margin-top: 10px;
         /*border: 1pt blue solid;*/
     }
     #fullViewPort {
@@ -102,7 +103,14 @@
 
 
 {% block content %}
-<main id="main-frame">
+<main id="main" style="background: black">
+
+    <section class="dark_section" >
+        <h1>Playing: Preditor-Prey</h1>
+    </section>
+<!--    <div class = 'gradiant_box'> </div>-->
+
+<main id="main-frame" >
     <div id = "master-frame" style="color: black">
         <div id = "fullViewPort" >
             <div id="contentViewPort" style="height: 95%;">
@@ -510,6 +518,5 @@
         </div>
     </div>
 </main>
-
+</main>
 {% endblock %}
-

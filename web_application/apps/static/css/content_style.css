@@ -25,18 +25,40 @@
 
 /*}*/
 
+.body {
+    background-color: var(--c_bg);
+}
 
+.row-wrapper {
+    display: flex;
+}
+.col-wrapper {
+    display: flex;
+}
 
+.h1-primary {
+    /*color: var(--c_primary);*/
+    color: var(--c_secondary);
+    display: flex;
+    align-content: center; justify-content: center;
+    align-items: center; justify-items: center;
+    text-align: center;
+    width: 100%;
+    height:auto;
+    font-size: 40pt;
+    margin-top:  16pt; margin-bottom: 5pt;
+}
 /*######## SECTION ###################*/
 .dark_section {
-    background-color: var(--c_primary10);
+    /*background-color: var(--c_primary10);*/
+    background-color: var(--c_bg_dark);
     display: flex;
     flex-direction: column;
     align-content: center;
     padding-left: 20pt;
     padding-right: 20pt;
 }
-.dark_section >h1{
+.dark_section > h1{
     color: var(--c_secondary);
     display: flex;
     align-content: center; justify-content: center;
@@ -55,7 +77,7 @@
     width: 100%;
     /*margin:  0pt 0pt;*/
     margin-top: 0pt;
-     margin-bottom:16pt;
+    margin-bottom:16pt;
 }
 .dark_section > p{
     color: var(--c_primary60);
@@ -74,7 +96,7 @@
     width: 96%;
     /*padding-left: 2%;*/
     /*padding-right: 2%;*/
-        margin-left: 2%;
+    margin-left: 2%;
     margin-right: 2%;
     align-content: center;
 
@@ -102,7 +124,9 @@
 
 
 .normal_section {
-    background-color: var(--c_primary60); color: var(--c_primary10);
+    background-color: var(--c_bg);;
+    /*background-color: var(--c_primary60); */
+    color: var(--c_primary10);
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -111,7 +135,8 @@
 }
 
 .normal_section > h1{
-    color: var(--c_primary10); /*color: var(--c_secondary);*/
+    /*color: var(--c_primary10); !*color: var(--c_secondary);*!*/
+    color: var(--c_primary); /*color: var(--c_secondary);*/
     text-align: left; /*text-align: center;*/
     width: 100%;
     height: 30pt;
@@ -120,13 +145,13 @@
     margin-bottom: 0pt;
 }
 .normal_section > h2{
-    color: var(--c_secondary_fg);
+    color: var(--c_secondary);
     font-size: 12pt;
     text-align: left; /*text-align: center;*/
     width: 100%;
 }
 .normal_section > p{
-    color:var(--c_secondary_fg);
+    color:white;
     text-align: left;
     width: 100%;
 }
@@ -231,7 +256,7 @@
     width: 96%; padding-right: 2%; padding-left: 2%;
     margin-top:  1%; margin-bottom: 2%;
     color: white;
-    background-color: inherit;
+    background-color: var(--c_bg_light);
     justify-content: center;
     align-content: center;
     display: grid;
@@ -267,4 +292,58 @@
     justify-content: center;
     flex: 1;
 
+    /* grid-template-areas:*/
+    /*"pic title title"*/
+    /*"pic txt txt";*/
+
+
 }
+
+
+
+
+
+.PicTitleText_grid {
+    height: 100%;
+    margin-right: 5%; margin-left: 5%;
+    padding-top: 2%; padding-bottom: 2%;
+    display: grid;
+    grid-template-columns: 30% 1fr 1fr;
+    grid-template-rows: 20% 1fr;
+    grid-auto-rows: ;
+    grid-column-gap: 50px;
+    grid-row-gap: 0px;
+    grid-template-areas:
+    "a b b"
+    "a c c";
+    align-content: center; justify-content: center;
+    /*border: 2px dashed rgba(114, 186, 94, 0.35);*/
+
+}
+.PicTitleText_grid > .Pic { grid-area: a; width:100%; max-height:400px }
+.PicTitleText_grid > .Title { grid-area: b; color: var(--c_primary); font-size: 30pt}
+.PicTitleText_grid > .Text{ grid-area: c; }
+
+.gradiant_box {
+    /*background: linear-gradient(0deg, var(--c_primary),  var(--c_secondary) 100%);*/
+    background-color: var(--c_primary) ; /* For browsers that do not support gradients */
+    background-image: linear-gradient(to right, var(--c_primary) , var(--c_accent));
+    height: 30px; min-height: 30px;
+    width: 100%;
+    /*margin: 0;*/
+    margin:0px ;
+    padding: 0;
+    border-bottom: black 2px solid;
+    border-top: black 2px solid;
+
+}
+    .circular-icon {
+        /*width: 100%;  height: auto;*/
+        width: 150px;  height: auto;
+        background: var(--c_primary);
+        margin: 0;padding: 10%;
+        /*-moz-border-radius: 50px;*/
+        /*-webkit-border-radius: 50px;*/
+        border-radius: 100%;
+
+    }

@@ -13,7 +13,7 @@
     .game_description_grid > .grid_item{ background-color: transparent;  padding: 0;}
     .game_description_grid > .grid_image{ grid-row: 1 / span 5; padding: 0; max-width: 500px}
     .preview_img { width: 100%; padding: 0; margin: 0}
-    p em { font-style: normal; color: var(--c_accent); font-weight: bold; margin: 0; }
+    p em { font-style: normal; color: var(--c_primary); font-weight: bold; margin: 0; }
     italic {font-style: italic; }
     p {padding: 0;margin: 0}
     ul {padding-top: 0;padding-bottom: 0; margin: 0}
@@ -33,13 +33,16 @@
 <main id="main">
     <section class="dark_section">
         <h1>Participate in an Experiment</h1>
-        <div style="width = 10%; padding-left: 40%;padding-right: 40%;padding-bottom: 16pt">
-            <button class="interactive_button" onclick="window.location.href='/render_PursuitGame'">Quick Join an Experiment</button>
-
+        <h2>To join our most current study, click the button below</h2>
+        <div style="width: 40%; margin-left:30%;margin-right: 30%; margin-bottom: 16pt;">
+            <button class="interactive_button" onclick="window.location.href='/render_PursuitGame'">Quick Join</button>
         </div>
         <!--        <h2>Select from the following experiments to participate in  </h2>-->
     </section>
-    <section class="normal_section" style="justify-content: center; padding-top: 1%; padding-bottom: 3%">
+    <div class = 'gradiant_box'> </div>
+
+
+    <section class="normal_section" style="justify-content: center; padding-top: 1%; padding-bottom: 3%;color: white">
         <h1>Preditor-Prey Game:</h1>
         <div class="game_description_grid">
             <div class = "grid_image"> <img class="preview_img" src="static/img/_placeholder.jpg" alt="game image">  </div>
@@ -142,18 +145,18 @@
     </section>
 
 
-        <script>
-            // Coming Soon Overlay
-            $(document).ready( draw_overlay() )
-            addEventListener("resize", (event) => {draw_overlay()});
-            function draw_overlay()  {
-                 let parent_ele = document.getElementById('comingsoon_sec');
-                 let child_ele =  document.getElementById('comingsoon');
-                 let parent_bbox = parent_ele.getBoundingClientRect()
-                 child_ele.style.height = parent_bbox.height;
-                 child_ele.style.width = parent_bbox.width;
-            }
-        </script>
+    <script>
+        // Coming Soon Overlay
+        $(document).ready( draw_overlay() )
+        addEventListener("resize", (event) => {draw_overlay()});
+        function draw_overlay()  {
+            let parent_ele = document.getElementById('comingsoon_sec');
+            let child_ele =  document.getElementById('comingsoon');
+            let parent_bbox = parent_ele.getBoundingClientRect()
+            child_ele.style.height = parent_bbox.height;
+            child_ele.style.width = parent_bbox.width;
+        }
+    </script>
 
 
 
