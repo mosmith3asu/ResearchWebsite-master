@@ -36,6 +36,8 @@ def create_app():
     from . import config
 
     config.initialize(app,socketio)
-    socketio.run(app, host="192.168.0.137", port=8080, debug=True, use_reloader=False)
+    # socketio.run(app, host="192.168.0.137", port=8080, debug=True, use_reloader=False)
+    socketio.run(host='127.0.0.1', port=8080, debug=True)
+
     # app.run(debug=True)
     return app
